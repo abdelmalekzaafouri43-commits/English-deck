@@ -13,7 +13,9 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -56,6 +58,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -67,12 +70,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import kotlinx.coroutines.delay
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
@@ -153,7 +159,30 @@ fun EnglishDeckApp(
   var isDrawActive by remember { mutableStateOf(false) }
   var showNotesDialog by remember { mutableStateOf(false) }
   var showAiTutorDialog by remember { mutableStateOf(false) }
+  var isDashboardCollapsed by remember { mutableStateOf(false) }
+  var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
   val scope = rememberCoroutineScope()
+
+  val resetInactivityTimer: () -> Unit = {
+    lastInteractionTime = System.currentTimeMillis()
+    if (isDashboardCollapsed) {
+      isDashboardCollapsed = false
+    }
+  }
+
+  // Auto-hide dashboard timer (5 seconds of inactivity)
+  LaunchedEffect(isDashboardCollapsed, lastInteractionTime) {
+    if (!isDashboardCollapsed) {
+      delay(5000L)
+      isDashboardCollapsed = true
+    }
+  }
+
+  val animatedDashboardWidth by animateDpAsState(
+    targetValue = if (isDashboardCollapsed) 42.dp else 185.dp,
+    animationSpec = tween(durationMillis = 350, easing = FastOutSlowInEasing),
+    label = "dashboard_width_animation"
+  )
 
   val autoPlayProgress = remember { Animatable(0f) }
   LaunchedEffect(isAutoPlay, currentSlideIndex, autoPlayIntervalMs) {
@@ -245,62 +274,86 @@ fun EnglishDeckApp(
       autoPlayIntervalMs = autoPlayIntervalMs,
       isLaserActive = isLaserActive,
       isDrawActive = isDrawActive,
+      isCollapsed = isDashboardCollapsed,
+      onToggleCollapse = {
+        isDashboardCollapsed = !isDashboardCollapsed
+        if (!isDashboardCollapsed) {
+          lastInteractionTime = System.currentTimeMillis()
+        }
+      },
+      onUserInteract = resetInactivityTimer,
       onSelectSlide = { slideIndex ->
+        resetInactivityTimer()
         onEvalJs("window.deck.goToSlide($slideIndex, true);")
       },
       onNext = {
+        resetInactivityTimer()
         onEvalJs("window.deck.next();")
       },
       onPrev = {
+        resetInactivityTimer()
         onEvalJs("window.deck.prev();")
       },
       onToggleAutoPlay = {
+        resetInactivityTimer()
         onEvalJs("window.deck.toggleAutoPlay();")
       },
       onChangeAutoPlaySpeed = { ms ->
+        resetInactivityTimer()
         autoPlayIntervalMs = ms
         onEvalJs("window.deck.setAutoPlaySpeed($ms);")
       },
       onToggleLaser = {
+        resetInactivityTimer()
         isLaserActive = !isLaserActive
         if (isLaserActive) isDrawActive = false
         onEvalJs("window.deck.toggleLaser();")
       },
       onToggleDraw = {
+        resetInactivityTimer()
         isDrawActive = !isDrawActive
         if (isDrawActive) isLaserActive = false
         onEvalJs("window.deck.toggleDraw();")
       },
       onClearDraw = {
+        resetInactivityTimer()
         onEvalJs("window.deck.clearDrawing();")
       },
       onPronounceWord = {
+        resetInactivityTimer()
         onEvalJs("window.deck.pronounceKeyWord();")
       },
       onSendReaction = { emoji ->
+        resetInactivityTimer()
         onEvalJs("window.deck.sendReaction('$emoji');")
       },
       onOpenNotes = {
+        resetInactivityTimer()
         showNotesDialog = true
         onEvalJs("window.deck.openNotes();")
       },
       onOpenAiTutor = {
+        resetInactivityTimer()
         showAiTutorDialog = true
       },
       onRevealQuiz = {
+        resetInactivityTimer()
         onEvalJs("window.deck.revealQuiz();")
       },
       onCelebrate = {
+        resetInactivityTimer()
         onEvalJs("window.deck.triggerConfetti();")
       },
       onReset = {
+        resetInactivityTimer()
         onEvalJs("window.deck.resetDeck();")
       },
       onToggleSound = {
+        resetInactivityTimer()
         onEvalJs("window.deck.toggleSound();")
       },
       modifier = Modifier
-        .width(185.dp)
+        .width(animatedDashboardWidth)
         .fillMaxHeight()
         .testTag("left_dashboard_container")
     )
@@ -375,6 +428,13 @@ fun EnglishDeckApp(
                   autoPlayIntervalMs = ms
                 }
               }
+
+              @JavascriptInterface
+              fun openAiTutor() {
+                scope.launch {
+                  showAiTutorDialog = true
+                }
+              }
             }, "AndroidBridge")
 
             loadUrl("file:///android_asset/index.html")
@@ -434,6 +494,37 @@ fun EnglishDeckApp(
               fontWeight = FontWeight.Bold
             )
           }
+        }
+      }
+
+      // Always-Visible Floating AI Tutor Spark Button on Presentation Stage
+      Surface(
+        modifier = Modifier
+          .align(Alignment.TopEnd)
+          .padding(top = if (isAutoPlay) 42.dp else 12.dp, end = 12.dp)
+          .clickable { showAiTutorDialog = true }
+          .testTag("floating_ai_tutor_button"),
+        shape = RoundedCornerShape(20.dp),
+        color = Color(0xEE0A0E1C),
+        border = BorderStroke(1.dp, Brush.horizontalGradient(listOf(IndigoVibrant, CyanNeon)))
+      ) {
+        Row(
+          modifier = Modifier.padding(horizontal = 10.dp, vertical = 6.dp),
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+          Icon(
+            imageVector = Icons.Default.AutoAwesome,
+            contentDescription = "AI Tutor",
+            tint = CyanNeon,
+            modifier = Modifier.size(14.dp)
+          )
+          Text(
+            text = "🤖 AI Tutor Spark",
+            color = Color.White,
+            fontSize = 11.sp,
+            fontWeight = FontWeight.Bold
+          )
         }
       }
     }
@@ -606,6 +697,9 @@ fun LeftDashboard(
   autoPlayIntervalMs: Long,
   isLaserActive: Boolean,
   isDrawActive: Boolean,
+  isCollapsed: Boolean = false,
+  onToggleCollapse: () -> Unit = {},
+  onUserInteract: () -> Unit = {},
   onSelectSlide: (Int) -> Unit,
   onNext: () -> Unit,
   onPrev: () -> Unit,
@@ -638,46 +732,200 @@ fun LeftDashboard(
       ),
     color = SpaceSurface
   ) {
-    Column(
-      modifier = Modifier
-        .fillMaxSize()
-        .padding(horizontal = 8.dp, vertical = 10.dp)
-        .verticalScroll(scrollState),
-      verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-      // Header Brand
-      Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp),
-        modifier = Modifier.padding(bottom = 2.dp)
+    if (isCollapsed) {
+      // Collapsed Thin Sidebar View
+      Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .clickable { onUserInteract() }
+          .padding(vertical = 8.dp, horizontal = 2.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
       ) {
+        IconButton(
+          onClick = { onToggleCollapse(); onUserInteract() },
+          modifier = Modifier
+            .size(32.dp)
+            .testTag("expand_dashboard_button")
+        ) {
+          Icon(
+            imageVector = Icons.Default.ChevronRight,
+            contentDescription = "Expand Dashboard",
+            tint = CyanNeon,
+            modifier = Modifier.size(20.dp)
+          )
+        }
+
         Box(
           modifier = Modifier
-            .size(28.dp)
+            .size(24.dp)
             .background(
               brush = Brush.linearGradient(listOf(IndigoPrimary, CyanBright)),
-              shape = RoundedCornerShape(8.dp)
+              shape = RoundedCornerShape(6.dp)
             ),
           contentAlignment = Alignment.Center
         ) {
-          Text(text = "🇬🇧", fontSize = 14.sp)
+          Text(text = "🇬🇧", fontSize = 12.sp)
         }
-        Column {
+
+        Surface(
+          shape = RoundedCornerShape(6.dp),
+          color = IndigoPrimary.copy(alpha = 0.3f),
+          border = BorderStroke(1.dp, CyanNeon.copy(alpha = 0.4f))
+        ) {
           Text(
-            text = "English Deck",
-            fontWeight = FontWeight.ExtraBold,
-            fontSize = 12.sp,
-            color = TextPrimary
-          )
-          Text(
-            text = "DASHBOARD",
+            text = "S${currentSlide + 1}",
+            fontSize = 11.sp,
             fontWeight = FontWeight.Bold,
-            fontSize = 9.sp,
             color = CyanNeon,
-            letterSpacing = 1.sp
+            modifier = Modifier.padding(horizontal = 4.dp, vertical = 2.dp)
+          )
+        }
+
+        IconButton(
+          onClick = { onPrev(); onUserInteract() },
+          modifier = Modifier.size(28.dp)
+        ) {
+          Icon(
+            imageVector = Icons.Default.ChevronLeft,
+            contentDescription = "Prev Slide",
+            tint = TextPrimary,
+            modifier = Modifier.size(16.dp)
+          )
+        }
+
+        IconButton(
+          onClick = { onNext(); onUserInteract() },
+          modifier = Modifier.size(28.dp)
+        ) {
+          Icon(
+            imageVector = Icons.Default.ChevronRight,
+            contentDescription = "Next Slide",
+            tint = TextPrimary,
+            modifier = Modifier.size(16.dp)
+          )
+        }
+
+        IconButton(
+          onClick = { onOpenAiTutor(); onUserInteract() },
+          modifier = Modifier.size(28.dp)
+        ) {
+          Icon(
+            imageVector = Icons.Default.AutoAwesome,
+            contentDescription = "AI Tutor",
+            tint = AccentAmber,
+            modifier = Modifier.size(16.dp)
+          )
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        Box(
+          modifier = Modifier
+            .clip(RoundedCornerShape(4.dp))
+            .background(IndigoPrimary.copy(alpha = 0.2f))
+            .padding(vertical = 6.dp, horizontal = 2.dp),
+          contentAlignment = Alignment.Center
+        ) {
+          Icon(
+            imageVector = Icons.Default.SmartToy,
+            contentDescription = "Dashboard Collapsed",
+            tint = CyanNeon,
+            modifier = Modifier.size(16.dp)
           )
         }
       }
+    } else {
+      Column(
+        modifier = Modifier
+          .fillMaxSize()
+          .pointerInput(Unit) {
+            awaitPointerEventScope {
+              while (true) {
+                awaitPointerEvent()
+                onUserInteract()
+              }
+            }
+          }
+          .padding(horizontal = 8.dp, vertical = 10.dp)
+          .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+      ) {
+        // Header Brand with Collapse Button
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.SpaceBetween,
+          modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 2.dp)
+        ) {
+          Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+          ) {
+            Box(
+              modifier = Modifier
+                .size(28.dp)
+                .background(
+                  brush = Brush.linearGradient(listOf(IndigoPrimary, CyanBright)),
+                  shape = RoundedCornerShape(8.dp)
+                ),
+              contentAlignment = Alignment.Center
+            ) {
+              Text(text = "🇬🇧", fontSize = 14.sp)
+            }
+            Column {
+              Text(
+                text = "English Deck",
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 12.sp,
+                color = TextPrimary
+              )
+              Text(
+                text = "DASHBOARD",
+                fontWeight = FontWeight.Bold,
+                fontSize = 9.sp,
+                color = CyanNeon,
+                letterSpacing = 1.sp
+              )
+            }
+          }
+
+          IconButton(
+            onClick = { onToggleCollapse() },
+            modifier = Modifier
+              .size(26.dp)
+              .testTag("collapse_dashboard_button")
+          ) {
+            Icon(
+              imageVector = Icons.Default.ChevronLeft,
+              contentDescription = "Collapse Dashboard",
+              tint = TextSecondary,
+              modifier = Modifier.size(18.dp)
+            )
+          }
+        }
+
+        // Auto-hide Status Indicator
+        Row(
+          verticalAlignment = Alignment.CenterVertically,
+          horizontalArrangement = Arrangement.spacedBy(4.dp),
+          modifier = Modifier
+            .fillMaxWidth()
+            .background(Color(0x1500F0FF), RoundedCornerShape(4.dp))
+            .padding(horizontal = 6.dp, vertical = 2.dp)
+        ) {
+          Box(
+            modifier = Modifier
+              .size(6.dp)
+              .background(CyanNeon, CircleShape)
+          )
+          Text(
+            text = "Auto-hides after 5s inactivity",
+            fontSize = 8.5.sp,
+            color = TextSecondary
+          )
+        }
 
       // Progress bar and counter
       Column(
@@ -779,6 +1027,33 @@ fun LeftDashboard(
             }
           }
         }
+      }
+
+      // High Visibility AI Tutor Trigger Button
+      Button(
+        onClick = onOpenAiTutor,
+        modifier = Modifier
+          .fillMaxWidth()
+          .height(34.dp)
+          .testTag("ai_tutor_button_primary"),
+        shape = RoundedCornerShape(8.dp),
+        contentPadding = PaddingValues(horizontal = 6.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1E1B4B)),
+        border = BorderStroke(1.dp, Brush.horizontalGradient(listOf(IndigoVibrant, CyanNeon)))
+      ) {
+        Icon(
+          imageVector = Icons.Default.AutoAwesome,
+          contentDescription = "AI Tutor",
+          tint = CyanNeon,
+          modifier = Modifier.size(15.dp)
+        )
+        Spacer(modifier = Modifier.width(6.dp))
+        Text(
+          text = "🤖 Ask AI Tutor (Spark)",
+          fontSize = 11.sp,
+          fontWeight = FontWeight.ExtraBold,
+          color = CyanNeon
+        )
       }
 
       // Auto-Play Feature Card with Embedded Pace Selector
@@ -1196,6 +1471,7 @@ fun LeftDashboard(
       }
     }
   }
+}
 }
 
 @Composable
