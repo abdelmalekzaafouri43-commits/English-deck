@@ -246,7 +246,7 @@ fun EnglishDeckApp(
       isLaserActive = isLaserActive,
       isDrawActive = isDrawActive,
       onSelectSlide = { slideIndex ->
-        onEvalJs("window.deck.goToSlide($slideIndex);")
+        onEvalJs("window.deck.goToSlide($slideIndex, true);")
       },
       onNext = {
         onEvalJs("window.deck.next();")
