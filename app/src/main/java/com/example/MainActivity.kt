@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.activity.ComponentActivity
@@ -382,6 +383,8 @@ fun EnglishDeckApp(
               ViewGroup.LayoutParams.MATCH_PARENT
             )
             setBackgroundColor(AndroidColor.TRANSPARENT)
+            clearCache(true)
+            settings.cacheMode = WebSettings.LOAD_NO_CACHE
             settings.javaScriptEnabled = true
             settings.domStorageEnabled = true
             settings.allowFileAccess = true
