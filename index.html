@@ -1,0 +1,3053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>The English Language - Interactive Presentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-space: #070913;
+      --bg-space-dark: #04050b;
+      --bg-card: rgba(18, 24, 46, 0.75);
+      --bg-card-hover: rgba(28, 38, 72, 0.85);
+      --border-card: rgba(99, 102, 241, 0.25);
+      --border-card-bright: rgba(34, 211, 238, 0.45);
+      
+      --indigo-primary: #6366f1;
+      --indigo-vibrant: #4f46e5;
+      --indigo-glow: rgba(99, 102, 241, 0.35);
+      
+      --cyan-neon: #22d3ee;
+      --cyan-bright: #06b6d4;
+      --cyan-glow: rgba(34, 211, 238, 0.4);
+      
+      --accent-amber: #fbbf24;
+      --accent-coral: #f43f5e;
+      --accent-emerald: #10b981;
+      --accent-purple: #c084fc;
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      
+      --dashboard-width: 250px;
+      --slide-aspect: 16 / 9;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-space-dark);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: row;
+      user-select: none;
+    }
+
+    /* Ambient Space Background with Starfield Glow */
+    .space-background {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background: 
+        radial-gradient(circle at 15% 20%, rgba(99, 102, 241, 0.18) 0%, transparent 45%),
+        radial-gradient(circle at 85% 75%, rgba(6, 182, 212, 0.16) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.95) 0%, #04060d 100%);
+      overflow: hidden;
+    }
+
+    .space-grid-pattern {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 48px 48px;
+      mask-image: radial-gradient(circle at 50% 50%, black 50%, transparent 95%);
+    }
+
+    /* DASHBOARD ON THE LEFT OF THE SCREEN */
+    .dashboard-sidebar {
+      position: relative;
+      z-index: 20;
+      width: var(--dashboard-width);
+      min-width: var(--dashboard-width);
+      height: 100vh;
+      background: rgba(10, 14, 28, 0.85);
+      backdrop-filter: blur(20px);
+      border-right: 1px solid rgba(99, 102, 241, 0.2);
+      display: flex;
+      flex-direction: column;
+      box-shadow: 4px 0 24px rgba(0, 0, 0, 0.5);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dashboard-header {
+      padding: 16px 14px 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .dashboard-badge-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      background: linear-gradient(135deg, var(--indigo-primary), var(--cyan-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 0 14px var(--cyan-glow);
+    }
+
+    .dashboard-title-group h1 {
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #fff, #a5b4fc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1.2;
+    }
+
+    .dashboard-title-group p {
+      font-size: 11px;
+      color: var(--cyan-neon);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Slide Navigation List in Dashboard */
+    .dashboard-nav {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dashboard-nav::-webkit-scrollbar {
+      width: 4px;
+    }
+    .dashboard-nav::-webkit-scrollbar-thumb {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: left;
+      transition: all 0.2s ease;
+    }
+
+    .nav-item:hover {
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--text-main);
+      border-color: rgba(99, 102, 241, 0.25);
+    }
+
+    .nav-item.active {
+      background: linear-gradient(90deg, rgba(99, 102, 241, 0.25), rgba(34, 211, 238, 0.12));
+      border-color: var(--cyan-neon);
+      color: #ffffff;
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
+    }
+
+    .nav-num {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    .nav-item.active .nav-num {
+      background: var(--cyan-neon);
+      color: #050b18;
+    }
+
+    .nav-label {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+    }
+
+    /* Dashboard Action Buttons & Live Stats */
+    .dashboard-footer {
+      padding: 12px;
+      background: rgba(6, 9, 20, 0.9);
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .dashboard-status-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-subtle);
+    }
+
+    .dashboard-status-row span strong {
+      color: var(--cyan-neon);
+      font-family: var(--font-mono);
+    }
+
+    .progress-bar-container {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 14.28%;
+      background: linear-gradient(90deg, var(--indigo-primary), var(--cyan-neon));
+      border-radius: 99px;
+      transition: width 0.3s ease;
+      box-shadow: 0 0 8px var(--cyan-neon);
+    }
+
+    .dashboard-controls-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .dash-btn {
+      padding: 7px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-main);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      font-family: var(--font-sans);
+    }
+
+    .dash-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    /* DISTINCT BUTTON HIERARCHY */
+    .nav-btn-prev {
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      color: #e2e8f0 !important;
+    }
+    .nav-btn-prev:hover {
+      background: rgba(255, 255, 255, 0.14) !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    .nav-btn-next {
+      background: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%) !important;
+      border: 1px solid rgba(34, 211, 238, 0.5) !important;
+      color: #ffffff !important;
+      font-weight: 800 !important;
+      box-shadow: 0 2px 10px rgba(99, 102, 241, 0.45) !important;
+    }
+    .nav-btn-next:hover {
+      box-shadow: 0 4px 16px rgba(34, 211, 238, 0.6) !important;
+    }
+
+    .btn-autoplay-styled {
+      background: rgba(99, 102, 241, 0.15) !important;
+      border: 1px solid rgba(99, 102, 241, 0.4) !important;
+      color: #c7d2fe !important;
+      font-weight: 800 !important;
+    }
+    .btn-autoplay-styled.active-auto {
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.25), rgba(99, 102, 241, 0.3)) !important;
+      border-color: var(--cyan-neon) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.45) !important;
+    }
+
+    .tool-laser {
+      background: rgba(244, 63, 94, 0.12) !important;
+      border: 1px solid rgba(244, 63, 94, 0.32) !important;
+      color: #fda4af !important;
+    }
+    .tool-laser:hover, .tool-laser.active-auto {
+      background: rgba(244, 63, 94, 0.3) !important;
+      border-color: #ff2a5f !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(255, 42, 95, 0.55) !important;
+    }
+
+    .tool-draw {
+      background: rgba(34, 211, 238, 0.12) !important;
+      border: 1px solid rgba(34, 211, 238, 0.35) !important;
+      color: #67e8f9 !important;
+    }
+    .tool-draw:hover, .tool-draw.active-auto {
+      background: rgba(34, 211, 238, 0.3) !important;
+      border-color: var(--cyan-neon) !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(34, 211, 238, 0.55) !important;
+    }
+
+    .tool-clear {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #94a3b8 !important;
+    }
+    .tool-clear:hover {
+      background: rgba(255, 255, 255, 0.14) !important;
+      color: #ffffff !important;
+    }
+
+    .tool-notes {
+      background: rgba(251, 191, 36, 0.12) !important;
+      border: 1px solid rgba(251, 191, 36, 0.35) !important;
+      color: #fde68a !important;
+    }
+    .tool-notes:hover {
+      background: rgba(251, 191, 36, 0.25) !important;
+      border-color: #fbbf24 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.4) !important;
+    }
+
+    .action-quiz {
+      background: rgba(16, 185, 129, 0.14) !important;
+      border: 1px solid rgba(16, 185, 129, 0.4) !important;
+      color: #6ee7b7 !important;
+    }
+    .action-quiz:hover {
+      background: rgba(16, 185, 129, 0.3) !important;
+      border-color: #10b981 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.5) !important;
+    }
+
+    .action-voice {
+      background: rgba(168, 85, 247, 0.14) !important;
+      border: 1px solid rgba(168, 85, 247, 0.4) !important;
+      color: #d8b4fe !important;
+    }
+    .action-voice:hover {
+      background: rgba(168, 85, 247, 0.3) !important;
+      border-color: #c084fc !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(168, 85, 247, 0.5) !important;
+    }
+
+    .action-party {
+      background: rgba(245, 158, 11, 0.14) !important;
+      border: 1px solid rgba(245, 158, 11, 0.4) !important;
+      color: #fcd34d !important;
+    }
+    .action-party:hover {
+      background: rgba(245, 158, 11, 0.3) !important;
+      border-color: #fbbf24 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(245, 158, 11, 0.5) !important;
+    }
+
+    .action-sound {
+      background: rgba(255, 255, 255, 0.05) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      color: #94a3b8 !important;
+    }
+    .action-sound:hover {
+      background: rgba(255, 255, 255, 0.12) !important;
+      color: #ffffff !important;
+    }
+
+    .dash-btn.full-width {
+      grid-column: span 2;
+    }
+
+    /* AUTO-PLAY VISUAL TIMER BAR AT TOP OF VIEWPORT */
+    .autoplay-timer-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 60;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .autoplay-timer-container.active {
+      opacity: 1;
+    }
+
+    .autoplay-timer-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1 0%, #22d3ee 50%, #10b981 100%);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.9), 0 0 28px rgba(99, 102, 241, 0.6);
+      border-radius: 0 99px 99px 0;
+      transform-origin: left;
+    }
+
+    .autoplay-viewport-timer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      z-index: 100;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      overflow: hidden;
+      pointer-events: none;
+    }
+
+    .autoplay-viewport-timer.active {
+      opacity: 1;
+    }
+
+    .autoplay-viewport-bar {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #6366f1 0%, #22d3ee 50%, #10b981 100%);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.9), 0 0 28px rgba(99, 102, 241, 0.6);
+      border-radius: 0 99px 99px 0;
+      transform-origin: left;
+    }
+
+    .autoplay-indicator-badge {
+      position: absolute;
+      top: 14px;
+      right: 20px;
+      z-index: 55;
+      background: rgba(10, 14, 28, 0.88);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(34, 211, 238, 0.45);
+      color: var(--cyan-neon);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 12px;
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 10px rgba(34, 211, 238, 0.2);
+    }
+
+    .autoplay-indicator-badge.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--cyan-neon);
+      box-shadow: 0 0 8px var(--cyan-neon);
+      animation: pulseDot 1.4s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.7); }
+    }
+
+    /* MAIN PRESENTATION STAGE */
+    .presentation-stage {
+      position: relative;
+      z-index: 10;
+      flex: 1;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 24px;
+      overflow: hidden;
+    }
+
+    /* 16:9 Responsive Slide Canvas */
+    .deck-viewport {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      aspect-ratio: var(--slide-aspect);
+      max-height: 94vh;
+      border-radius: 20px;
+      background: rgba(11, 15, 30, 0.7);
+      backdrop-filter: blur(24px);
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: 
+        0 20px 50px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(99, 102, 241, 0.15);
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* SLIDES STACK & MODERN PRESENTATION APP TRANSITION */
+    .slide {
+      position: absolute;
+      inset: 0;
+      padding: 40px 48px;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(38px) scale(0.985);
+      filter: blur(4px);
+      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.4s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow: hidden;
+      will-change: transform, opacity, filter;
+    }
+
+    .slide.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateX(0) scale(1);
+      filter: blur(0);
+      z-index: 2;
+    }
+
+    .slide.slide-prev {
+      transform: translateX(-38px) scale(0.985);
+      opacity: 0;
+      filter: blur(4px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .slide.slide-next {
+      transform: translateX(38px) scale(0.985);
+      opacity: 0;
+      filter: blur(4px);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    /* FRAGMENT SEQUENCING */
+    .fragment {
+      opacity: 0;
+      transform: translateY(16px);
+      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      pointer-events: none;
+    }
+
+    .fragment.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    /* BADGES & TYPOGRAPHY */
+    .pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 99px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.35);
+      color: var(--cyan-neon);
+      box-shadow: 0 0 16px rgba(34, 211, 238, 0.2);
+      width: fit-content;
+    }
+
+    .pill-badge.indigo {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      box-shadow: 0 0 16px var(--indigo-glow);
+    }
+
+    .pill-badge.amber {
+      background: rgba(251, 191, 36, 0.15);
+      border-color: rgba(251, 191, 36, 0.4);
+      color: var(--accent-amber);
+    }
+
+    .slide-title-wrapper {
+      margin-bottom: 18px;
+    }
+
+    .slide-title {
+      font-size: 32px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #ffffff 10%, #c7d2fe 50%, #22d3ee 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .slide-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 4px;
+      font-weight: 500;
+      line-height: 1.4;
+      max-width: 820px;
+    }
+
+    /* SLIDE 1: COVER LAYOUT */
+    .layout-cover {
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .cover-content {
+      max-width: 820px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .cover-title {
+      font-size: 58px;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+      background: linear-gradient(135deg, #ffffff 0%, #a5b4fc 45%, #22d3ee 85%, #38bdf8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 4px 20px rgba(99, 102, 241, 0.4));
+    }
+
+    .cover-subtitle {
+      font-size: 18px;
+      color: #cbd5e1;
+      line-height: 1.5;
+      max-width: 680px;
+      font-weight: 500;
+    }
+
+    /* SLIDE 1: DISTINCT FEATURE CARDS & HERO ACTION */
+    .cover-feature-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 6px;
+      width: 100%;
+      max-width: 860px;
+    }
+
+    .cover-feature-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 16px;
+      border-radius: 14px;
+      background: rgba(18, 24, 46, 0.75);
+      backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      text-align: left;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cover-feature-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .cover-feature-card.gaming::before {
+      background: linear-gradient(90deg, #a855f7, #ec4899);
+    }
+    .cover-feature-card.social::before {
+      background: linear-gradient(90deg, #06b6d4, #3b82f6);
+    }
+    .cover-feature-card.code::before {
+      background: linear-gradient(90deg, #10b981, #06b6d4);
+    }
+
+    .cover-feature-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      border-color: rgba(99, 102, 241, 0.4);
+    }
+
+    .feature-icon-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      flex-shrink: 0;
+      box-shadow: inset 0 0 12px rgba(255, 255, 255, 0.05);
+    }
+
+    .feature-text h3 {
+      font-size: 13px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 2px;
+      letter-spacing: -0.01em;
+    }
+
+    .feature-text p {
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.35;
+    }
+
+    .cover-actions-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 10px;
+    }
+
+    .hero-start-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 13px 30px;
+      border-radius: 99px;
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 50%, #06b6d4 100%);
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      border: 1px solid rgba(34, 211, 238, 0.5);
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(99, 102, 241, 0.55), 0 0 24px rgba(6, 182, 212, 0.35);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-start-btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 8px 30px rgba(99, 102, 241, 0.75), 0 0 32px rgba(34, 211, 238, 0.6);
+    }
+
+    .hero-start-btn:active {
+      transform: translateY(0) scale(0.98);
+    }
+
+    .hero-listen-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 11px 22px;
+      border-radius: 99px;
+      background: rgba(168, 85, 247, 0.15);
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      color: #d8b4fe;
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .hero-listen-btn:hover {
+      background: rgba(168, 85, 247, 0.3);
+      color: #ffffff;
+      transform: translateY(-1px);
+    }
+
+    /* SLIDE 2: GRID "A CRAZY MIX OF LANGUAGES" */
+    .layout-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .story-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--cyan-neon);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    .story-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--indigo-primary), var(--cyan-neon));
+      opacity: 0.7;
+    }
+
+    .card-era-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 10px;
+      margin-bottom: 4px;
+    }
+
+    .card-narrative {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.45;
+      margin-bottom: 12px;
+    }
+
+    .card-vocab-highlight {
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 12px;
+      font-family: var(--font-mono);
+      color: var(--cyan-neon);
+      line-height: 1.4;
+    }
+
+    .card-vocab-highlight strong {
+      color: var(--accent-amber);
+    }
+
+    /* SLIDE 3: HORIZONTAL TIMELINE VISUALIZATION (CSS GRID) */
+    .timeline-track-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      justify-content: center;
+      position: relative;
+    }
+
+    .timeline-line {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .timeline-line-glow {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, #6366f1 0%, #22d3ee 35%, #fbbf24 70%, #10b981 100%);
+      box-shadow: 0 0 16px var(--cyan-neon);
+    }
+
+    .timeline-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      align-items: stretch;
+      flex: 1;
+    }
+
+    .timeline-node-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .timeline-node-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--cyan-neon);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    }
+
+    .timeline-marker-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .timeline-dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--indigo-primary), var(--cyan-bright));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+      box-shadow: 0 0 14px var(--cyan-glow);
+      flex-shrink: 0;
+    }
+
+    .timeline-era-badge {
+      font-size: 10px;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--cyan-neon);
+      background: rgba(34, 211, 238, 0.12);
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(34, 211, 238, 0.3);
+    }
+
+    .timeline-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+
+    .timeline-desc {
+      font-size: 11.5px;
+      color: #cbd5e1;
+      line-height: 1.42;
+      margin-bottom: 8px;
+      flex: 1;
+    }
+
+    .timeline-quote-box {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 8px 10px;
+      font-size: 10.5px;
+      font-family: var(--font-mono);
+      color: var(--accent-amber);
+      line-height: 1.35;
+    }
+
+    .timeline-quote-box strong {
+      color: #94a3b8;
+      font-size: 9.5px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* SLIDE 4: SPLIT "WHY EVERYONE SPEAKS IT TODAY" */
+    .layout-split {
+      display: grid;
+      grid-template-columns: 1.3fr 0.9fr;
+      gap: 24px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .anchors-column {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .anchor-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: 14px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      transition: all 0.25s ease;
+    }
+
+    .anchor-item:hover {
+      border-color: var(--cyan-neon);
+      background: var(--bg-card-hover);
+    }
+
+    .anchor-icon-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: rgba(99, 102, 241, 0.2);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .anchor-text-box h3 {
+      font-size: 15px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 3px;
+    }
+
+    .anchor-text-box p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    .stat-hero-card {
+      background: linear-gradient(145deg, rgba(30, 27, 75, 0.8), rgba(8, 47, 73, 0.7));
+      border: 1px solid rgba(34, 211, 238, 0.4);
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(34, 211, 238, 0.1);
+    }
+
+    .giant-rank-badge {
+      font-size: 88px;
+      font-weight: 900;
+      letter-spacing: -0.06em;
+      line-height: 0.9;
+      background: linear-gradient(135deg, #ffffff 20%, var(--cyan-neon) 80%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 0 30px var(--cyan-glow));
+    }
+
+    .hero-stat-number {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-top: 10px;
+    }
+
+    .hero-stat-label {
+      font-size: 13px;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin-top: 6px;
+      max-width: 240px;
+    }
+
+    /* SLIDE 5: TRIVIA GRID "ENGLISH IS WEIRD" */
+    .layout-trivia-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      flex: 1;
+      align-items: stretch;
+    }
+
+    .trivia-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: 16px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .trivia-icon-badge {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .trivia-head {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+      margin-bottom: 8px;
+    }
+
+    .trivia-body {
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.45;
+      flex: 1;
+    }
+
+    .trivia-callout {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent-amber);
+      word-break: break-all;
+    }
+
+    /* SLIDE 6: INTERACTIVE QUIZ LAYOUT */
+    .layout-quiz {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .quiz-question-banner {
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.25), rgba(34, 211, 238, 0.15));
+      border: 1px solid rgba(34, 211, 238, 0.4);
+      border-radius: 16px;
+      padding: 22px 28px;
+      text-align: center;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .quiz-question-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .quiz-grid-2x2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .quiz-option {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 20px;
+      border-radius: 14px;
+      background: var(--bg-card);
+      border: 2px solid var(--border-card);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-option:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--indigo-primary);
+      transform: translateY(-2px);
+    }
+
+    .option-key {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      font-family: var(--font-mono);
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+
+    .option-info {
+      flex: 1;
+    }
+
+    .option-letter {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .option-detail {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* THE REQUIRED .correct TEMPLATE CLASS */
+    .quiz-option.correct {
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.25), rgba(6, 182, 212, 0.2)) !important;
+      border-color: var(--accent-emerald) !important;
+      box-shadow: 0 0 24px rgba(16, 185, 129, 0.45) !important;
+      transform: scale(1.02);
+    }
+
+    .quiz-option.correct .option-key {
+      background: var(--accent-emerald);
+      color: #042416;
+    }
+
+    .quiz-option.correct .option-letter {
+      color: #34d399;
+    }
+
+    .quiz-option.wrong-picked {
+      background: rgba(244, 63, 94, 0.15) !important;
+      border-color: var(--accent-coral) !important;
+      opacity: 0.7;
+    }
+
+    .quiz-feedback-box {
+      margin-top: 6px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: center;
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* SLIDE 7: CLOSING COVER */
+    .closing-stats-row {
+      display: flex;
+      gap: 16px;
+      margin-top: 18px;
+      justify-content: center;
+    }
+
+    .closing-stat-item {
+      padding: 14px 22px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      text-align: center;
+    }
+
+    .closing-stat-num {
+      font-size: 26px;
+      font-weight: 900;
+      color: var(--cyan-neon);
+      font-family: var(--font-mono);
+    }
+
+    .closing-stat-desc {
+      font-size: 11px;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* CELEBRATION CONFETTI CANVAS */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    /* PRESENTER ANNOTATION & LASER POINTER LAYER */
+    #drawing-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 45;
+      pointer-events: none;
+    }
+    #drawing-canvas.drawing-active {
+      pointer-events: auto;
+      cursor: crosshair;
+    }
+    #drawing-canvas.laser-active {
+      pointer-events: auto;
+      cursor: none;
+    }
+    .laser-dot {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #ff2a5f 25%, rgba(255, 42, 95, 0.4) 60%, transparent 100%);
+      box-shadow: 0 0 16px #ff2a5f, 0 0 32px #ff2a5f;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 50;
+      display: none;
+    }
+    .laser-dot.active {
+      display: block;
+    }
+
+    /* REACTION FLOATER PARTICLES */
+    .reactions-stage {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 55;
+      overflow: hidden;
+    }
+    .floating-reaction {
+      position: absolute;
+      bottom: 24px;
+      font-size: 32px;
+      animation: floatUpReaction 2.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+      pointer-events: none;
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.7));
+    }
+    @keyframes floatUpReaction {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(0.6) rotate(0deg);
+      }
+      50% {
+        opacity: 0.95;
+        transform: translateY(-45vh) scale(1.3) rotate(-15deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-90vh) scale(1) rotate(20deg);
+      }
+    }
+
+    /* DASHBOARD SPEED CHIPS & REACTION BUTTONS */
+    .dash-section-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+      margin-bottom: 2px;
+    }
+
+    .reaction-bar {
+      display: flex;
+      gap: 4px;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+    .reaction-btn {
+      flex: 1;
+      padding: 4px 0;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.15s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .reaction-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .speed-chips-row {
+      display: flex;
+      gap: 4px;
+      margin-top: 2px;
+    }
+    .speed-chip {
+      flex: 1;
+      padding: 3px 0;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      font-size: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: var(--font-mono);
+      transition: all 0.2s ease;
+    }
+    .speed-chip:hover {
+      border-color: var(--cyan-neon);
+      color: #fff;
+    }
+    .speed-chip.active {
+      background: rgba(34, 211, 238, 0.2);
+      border-color: var(--cyan-neon);
+      color: var(--cyan-neon);
+    }
+
+    /* PRONUNCIATION AUDIO PILL */
+    .audio-pronounce-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 99px;
+      border: 1px solid rgba(34, 211, 238, 0.4);
+      background: rgba(34, 211, 238, 0.12);
+      color: var(--cyan-neon);
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: var(--font-sans);
+      margin-top: 4px;
+    }
+    .audio-pronounce-btn:hover {
+      background: rgba(34, 211, 238, 0.25);
+      transform: scale(1.03);
+    }
+
+    /* SPEAKER NOTES MODAL */
+    .notes-modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(4, 6, 14, 0.78);
+      backdrop-filter: blur(14px);
+      z-index: 150;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .notes-modal-overlay.active {
+      display: flex;
+    }
+    .notes-modal-card {
+      width: 100%;
+      max-width: 580px;
+      background: linear-gradient(135deg, rgba(16, 22, 45, 0.96), rgba(10, 14, 28, 0.96));
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(99, 102, 241, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    .notes-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 10px;
+    }
+    .notes-modal-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .notes-close-btn {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border-radius: 8px;
+      padding: 5px 12px;
+      cursor: pointer;
+      font-weight: 700;
+      font-size: 12px;
+    }
+    .notes-close-btn:hover {
+      background: rgba(244, 63, 94, 0.25);
+      border-color: #f43f5e;
+    }
+    .notes-box {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 10px;
+      padding: 10px 14px;
+      border-left: 3px solid var(--cyan-neon);
+    }
+    .notes-box h4 {
+      font-size: 11px;
+      color: var(--cyan-neon);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 3px;
+    }
+    .notes-box p {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #cbd5e1;
+    }
+
+    /* BOTTOM HINT PILL */
+    .keyboard-hint-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      color: var(--text-subtle);
+      font-family: var(--font-mono);
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 12px;
+      border-radius: 99px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: 8px;
+    }
+
+    .key-badge {
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.15);
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    /* PRINT AND PDF STYLES */
+    @media print {
+      body {
+        background: #0B0E14 !important;
+        color: #ffffff !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      .dashboard-sidebar, .space-background, .keyboard-hint-pill, #confetti-canvas {
+        display: none !important;
+      }
+      .presentation-stage {
+        padding: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+        display: block !important;
+      }
+      .deck-viewport {
+        max-width: 100% !important;
+        max-height: none !important;
+        box-shadow: none !important;
+        border: none !important;
+        display: block !important;
+        height: auto !important;
+      }
+      .slide {
+        position: relative !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        opacity: 1 !important;
+        transform: none !important;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        box-sizing: border-box !important;
+        padding: 40px !important;
+      }
+      .fragment {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .quiz-option.correct {
+        border-color: #10b981 !important;
+        background: rgba(16, 185, 129, 0.3) !important;
+      }
+    }
+
+    /* MOBILE / RESPONSIVE CONDENSED DASHBOARD */
+    @media (max-width: 840px) {
+      :root {
+        --dashboard-width: 170px;
+      }
+      .dashboard-title-group p {
+        display: none;
+      }
+      .slide {
+        padding: 22px 18px;
+      }
+      .cover-title {
+        font-size: 38px;
+      }
+      .slide-title {
+        font-size: 22px;
+      }
+      .layout-grid-3, .layout-trivia-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .timeline-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .layout-split {
+        grid-template-columns: 1fr;
+      }
+      .quiz-grid-2x2 {
+        grid-template-columns: 1fr;
+      }
+      .stat-hero-card {
+        padding: 16px;
+      }
+      .giant-rank-badge {
+        font-size: 54px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Space Canvas -->
+  <div class="space-background">
+    <div class="space-grid-pattern"></div>
+  </div>
+
+  <!-- Confetti Canvas for Interactive Celebrations -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- DASHBOARD ON THE LEFT OF THE SCREEN (Always Docked on Left) -->
+  <aside class="dashboard-sidebar" id="dashboard" role="navigation" aria-label="Deck Controls">
+    <div class="dashboard-header">
+      <div class="dashboard-badge-icon">🇬🇧</div>
+      <div class="dashboard-title-group">
+        <h1>English Deck</h1>
+        <p>Student Masterclass</p>
+      </div>
+    </div>
+
+    <!-- Navigation List to jump to any slide directly (7 Slides Total) -->
+    <nav class="dashboard-nav" id="slide-nav-list">
+      <button class="nav-item active" onclick="deck.goToSlide(0)">
+        <span class="nav-num">1</span>
+        <span class="nav-label">Cover &amp; Intro</span>
+      </button>
+      <button class="nav-item" onclick="deck.goToSlide(1)">
+        <span class="nav-num">2</span>
+        <span class="nav-label">Crazy Origins</span>
+      </button>
+      <button class="nav-item" onclick="deck.goToSlide(2)">
+        <span class="nav-num">3</span>
+        <span class="nav-label">Evolution Timeline</span>
+      </button>
+      <button class="nav-item" onclick="deck.goToSlide(3)">
+        <span class="nav-num">4</span>
+        <span class="nav-label">Why It Won</span>
+      </button>
+      <button class="nav-item" onclick="deck.goToSlide(4)">
+        <span class="nav-num">5</span>
+        <span class="nav-label">Weird Trivia</span>
+      </button>
+      <button class="nav-item" onclick="deck.goToSlide(5)">
+        <span class="nav-num">6</span>
+        <span class="nav-label">Interactive Quiz</span>
+      </button>
+      <button class="nav-item" onclick="deck.goToSlide(6)">
+        <span class="nav-num">7</span>
+        <span class="nav-label">Conquer The World</span>
+      </button>
+    </nav>
+
+    <!-- Dashboard Controls, Slide Progress & Lesson Tools -->
+    <div class="dashboard-footer">
+      <div class="dashboard-status-row">
+        <span>Slide: <strong id="dash-slide-num">1</strong> / 7</span>
+        <span>Step: <strong id="dash-frag-num">0</strong>/<span id="dash-frag-total">0</span></span>
+      </div>
+
+      <div class="progress-bar-container">
+        <div class="progress-bar-fill" id="progress-bar"></div>
+      </div>
+
+      <!-- Navigation Section: Primary Flow -->
+      <div class="dashboard-controls-grid">
+        <button class="dash-btn nav-btn-prev" id="btn-prev" onclick="deck.prev()" title="Previous (Left Arrow)">◀ Prev</button>
+        <button class="dash-btn nav-btn-next" id="btn-next" onclick="deck.next()" title="Next / Step Fragment (Space / Right Arrow)">Next ▶</button>
+      </div>
+
+      <!-- Auto-Play Feature & Pace -->
+      <button class="dash-btn btn-autoplay-styled full-width" id="btn-autoplay" onclick="deck.toggleAutoPlay()" title="Toggle Auto-Play">⏱ Auto-Play: 15s</button>
+      <div class="speed-chips-row">
+        <button class="speed-chip" id="speed-10" onclick="deck.setAutoPlaySpeed(10000)">10s</button>
+        <button class="speed-chip active" id="speed-15" onclick="deck.setAutoPlaySpeed(15000)">15s</button>
+        <button class="speed-chip" id="speed-30" onclick="deck.setAutoPlaySpeed(30000)">30s</button>
+      </div>
+
+      <!-- Presenter Studio Tools (Color-Coded) -->
+      <div class="dash-section-label">Presenter Tools</div>
+      <div class="dashboard-controls-grid">
+        <button class="dash-btn tool-laser" id="btn-laser" onclick="deck.toggleLaser()" title="Laser Pointer (L)">🔴 Laser</button>
+        <button class="dash-btn tool-draw" id="btn-draw" onclick="deck.toggleDraw()" title="Pen Highlighter (D)">✏️ Draw</button>
+        <button class="dash-btn tool-clear" id="btn-clear-draw" onclick="deck.clearDrawing()" title="Clear Annotations">🧹 Clear</button>
+        <button class="dash-btn tool-notes" id="btn-notes" onclick="deck.openNotes()" title="Speaker Notes & Activities">📋 Notes</button>
+      </div>
+
+      <!-- Interactive Actions (Quiz, Voice, Party, Sound) -->
+      <div class="dash-section-label">Actions</div>
+      <div class="dashboard-controls-grid">
+        <button class="dash-btn action-quiz" id="btn-reveal" onclick="deck.revealQuiz()" title="Reveal Quiz Answer">💡 Quiz</button>
+        <button class="dash-btn action-voice" onclick="deck.pronounceKeyWord()" title="Listen to Key Pronunciation">🔊 Voice</button>
+        <button class="dash-btn action-party" onclick="deck.triggerConfetti()" title="Confetti celebration">🎉 Party</button>
+        <button class="dash-btn action-sound" id="btn-sound" onclick="deck.toggleSound()" title="Sound FX Toggle">🔔 Sound</button>
+      </div>
+
+      <!-- Live Audience Reactions (Circular Bubbles) -->
+      <div class="dash-section-label">Reactions</div>
+      <div class="reaction-bubble-bar">
+        <button class="reaction-bubble" onclick="deck.sendReaction('🔥')" title="Fire">🔥</button>
+        <button class="reaction-bubble" onclick="deck.sendReaction('🤯')" title="Mind Blown">🤯</button>
+        <button class="reaction-bubble" onclick="deck.sendReaction('👏')" title="Applause">👏</button>
+        <button class="reaction-bubble" onclick="deck.sendReaction('💯')" title="100">💯</button>
+        <button class="reaction-bubble" onclick="deck.sendReaction('⚡')" title="Electric">⚡</button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN 16:9 PRESENTATION STAGE -->
+  <main class="presentation-stage">
+    <!-- Visual Timer Bar at Top of Viewport for Auto-Play -->
+    <div class="autoplay-viewport-timer" id="autoplay-viewport-timer">
+      <div class="autoplay-viewport-bar" id="autoplay-viewport-bar"></div>
+    </div>
+
+    <div class="deck-viewport" id="deck-container">
+
+      <!-- Interactive Presenter Annotation & Laser Layer -->
+      <canvas id="drawing-canvas"></canvas>
+      <div class="laser-dot" id="laser-dot"></div>
+      <div class="reactions-stage" id="reactions-stage"></div>
+
+      <!-- Visual Timer Bar at Top of Viewport for Auto-Play -->
+      <div class="autoplay-timer-container" id="autoplay-timer-container">
+        <div class="autoplay-timer-bar" id="autoplay-timer-bar"></div>
+      </div>
+      <div class="autoplay-indicator-badge" id="autoplay-badge">
+        <span class="pulse-dot"></span> Auto-Play (<span id="autoplay-countdown">15</span>s)
+      </div>
+
+      <!-- SLIDE 1 (layout-cover) -->
+      <section class="slide layout-cover active" id="slide-1" data-index="0">
+        <div class="cover-content">
+          <div class="pill-badge fragment">⚡ Fun &amp; Interactive Lesson</div>
+          
+          <h1 class="cover-title fragment">The English Language</h1>
+          
+          <p class="cover-subtitle fragment">
+            How a tiny island’s wild linguistic mashup conquered global video games, pop music, internet memes, and over 1.5 billion minds across the planet.
+          </p>
+
+          <!-- Rich Informational Anchor Cards (Distinct from buttons!) -->
+          <div class="cover-feature-grid fragment">
+            <div class="cover-feature-card gaming">
+              <div class="feature-icon-circle">🎮</div>
+              <div class="feature-text">
+                <h3>Gaming &amp; Discord</h3>
+                <p>Global multiplayer servers &amp; voice chats</p>
+              </div>
+            </div>
+            <div class="cover-feature-card social">
+              <div class="feature-icon-circle">📱</div>
+              <div class="feature-text">
+                <h3>TikTok &amp; Social Feeds</h3>
+                <p>Viral trends, memes &amp; worldwide slang</p>
+              </div>
+            </div>
+            <div class="cover-feature-card code">
+              <div class="feature-icon-circle">💻</div>
+              <div class="feature-text">
+                <h3>Code &amp; Global Tech</h3>
+                <p>Python, JS &amp; 100% of core syntax keywords</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Unmistakable Hero Action CTA Row -->
+          <div class="cover-actions-row fragment">
+            <button class="hero-start-btn" onclick="deck.next()">
+              🚀 Start Exploring Lesson <span style="font-size:12px;">▶</span>
+            </button>
+            <button class="hero-listen-btn" onclick="deck.pronounceKeyWord()">
+              🔊 Listen Overview
+            </button>
+          </div>
+
+          <div class="keyboard-hint-pill fragment">
+            Press <span class="key-badge">Space</span> or <span class="key-badge">▶</span> to start exploring
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 2 (layout-grid): "A Crazy Mix of Languages" -->
+      <section class="slide" id="slide-2" data-index="1">
+        <div class="slide-title-wrapper">
+          <div class="pill-badge indigo fragment">History Eras &amp; Anecdotes</div>
+          <h2 class="slide-title fragment">A Crazy Mix of Languages</h2>
+          <p class="slide-subtitle fragment">English isn’t a single pure language—it’s three languages in a trench coat pretending to be one!</p>
+        </div>
+
+        <div class="layout-grid-3">
+          <!-- Era 1: Germanic & Viking Base -->
+          <div class="story-card fragment">
+            <div>
+              <div class="pill-badge">450 - 1000 AD</div>
+              <h3 class="card-era-title">Germanic &amp; Viking Roots</h3>
+              <p class="card-narrative">
+                Anglo-Saxons gave us the everyday skeleton: words for family, body, and basic survival. Then fierce Viking invaders dropped in and gifted everyday grit!
+              </p>
+            </div>
+            <div class="card-vocab-highlight">
+              <strong>Core Base:</strong> earth, water, child, house.<br>
+              <strong>Viking Gifts:</strong> sky, egg, leg, knife, husband.
+            </div>
+          </div>
+
+          <!-- Era 2: The French Twist in 1066 -->
+          <div class="story-card fragment">
+            <div>
+              <div class="pill-badge amber">1066 Norman Conquest</div>
+              <h3 class="card-era-title">The French Twist: Cow vs. Beef</h3>
+              <p class="card-narrative">
+                When William the Conqueror seized England, French became the language of royalty, while Anglo-Saxon peasants worked the farms!
+              </p>
+            </div>
+            <div class="card-vocab-highlight">
+              <strong>In the mud (Peasant):</strong> Cow, Pig, Sheep.<br>
+              <strong>On the table (Noble):</strong> Beef, Pork, Mutton!
+            </div>
+            <button class="audio-pronounce-btn" onclick="deck.speakWord('Cow versus Boeuf and Beef! Farm peasant meets Norman royal.')">🔊 Hear Cow vs Beef</button>
+          </div>
+
+          <!-- Era 3: Shakespeare's Flex -->
+          <div class="story-card fragment">
+            <div>
+              <div class="pill-badge coral">1590s Renaissance</div>
+              <h3 class="card-era-title">Shakespeare’s Vocab Flex</h3>
+              <p class="card-narrative">
+                When the Bard needed a word that didn't exist, he simply invented it! He added over 1,700 words that you and your friends still say daily.
+              </p>
+            </div>
+            <div class="card-vocab-highlight">
+              <strong>Invented on the spot:</strong> eyeball, swagger, bedroom, champion, lonely, gossip!
+            </div>
+            <button class="audio-pronounce-btn" onclick="deck.speakWord('Eyeball! Swagger! Bedroom! Champion! Lonely!')">🔊 Hear Shakespeare's Words</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 3 (layout-grid): HORIZONTAL TIMELINE VISUALIZATION -->
+      <section class="slide" id="slide-3" data-index="2">
+        <div class="slide-title-wrapper">
+          <div class="pill-badge indigo fragment">Historical Chronology</div>
+          <h2 class="slide-title fragment">Evolution of English: 1,500-Year Timeline</h2>
+          <p class="slide-subtitle fragment">Track how war, kings, printing presses, and the internet transformed English across four key milestones.</p>
+        </div>
+
+        <div class="timeline-track-wrapper">
+          <!-- Horizontal Glowing Timeline Track -->
+          <div class="timeline-line fragment">
+            <div class="timeline-line-glow"></div>
+          </div>
+
+          <!-- CSS Grid Aligning Key Historical Milestones Horizontally -->
+          <div class="timeline-grid">
+            <!-- Milestone 1: Old English -->
+            <div class="timeline-node-card fragment">
+              <div class="timeline-marker-header">
+                <div class="timeline-dot">🛡️</div>
+                <div class="timeline-era-badge">450 – 1150 AD</div>
+              </div>
+              <h3 class="timeline-title">Old English</h3>
+              <p class="timeline-desc">
+                Anglo-Saxons &amp; Vikings bring runic letters (þ, ð, æ). Germanic warrior poetry like <em>Beowulf</em> dominates.
+              </p>
+              <div class="timeline-quote-box">
+                <strong>Ancient Sound:</strong>
+                <em>"Hwæt! Wē Gār-Dena in geārdagum..."</em>
+              </div>
+              <button class="audio-pronounce-btn" onclick="deck.speakWord('Hwaet! We Gar-Dena in geardagum!')">🔊 Hear Beowulf</button>
+            </div>
+
+            <!-- Milestone 2: Middle English -->
+            <div class="timeline-node-card fragment">
+              <div class="timeline-marker-header">
+                <div class="timeline-dot">🏰</div>
+                <div class="timeline-era-badge">1150 – 1500 AD</div>
+              </div>
+              <h3 class="timeline-title">Middle English</h3>
+              <p class="timeline-desc">
+                1066 Norman Conquest fuses French vocabulary with English grammar. Chaucer writes <em>The Canterbury Tales</em>.
+              </p>
+              <div class="timeline-quote-box">
+                <strong>Chaucer's Sound:</strong>
+                <em>"Whan that Aprill with his shoures soote..."</em>
+              </div>
+              <button class="audio-pronounce-btn" onclick="deck.speakWord('Whan that Aprill with his shoures soote!')">🔊 Hear Chaucer</button>
+            </div>
+
+            <!-- Milestone 3: Early Modern English -->
+            <div class="timeline-node-card fragment">
+              <div class="timeline-marker-header">
+                <div class="timeline-dot">🎭</div>
+                <div class="timeline-era-badge">1500 – 1800 AD</div>
+              </div>
+              <h3 class="timeline-title">Early Modern</h3>
+              <p class="timeline-desc">
+                The Printing Press (1476), Great Vowel Shift, and Shakespeare's 1,700 new words lock in English spelling forever.
+              </p>
+              <div class="timeline-quote-box">
+                <strong>Shakespeare's Sound:</strong>
+                <em>"To be, or not to be, that is the question..."</em>
+              </div>
+            </div>
+
+            <!-- Milestone 4: Late Modern & Global English -->
+            <div class="timeline-node-card fragment">
+              <div class="timeline-marker-header">
+                <div class="timeline-dot">🌐</div>
+                <div class="timeline-era-badge">1800 – Present</div>
+              </div>
+              <h3 class="timeline-title">Late Modern &amp; Global</h3>
+              <p class="timeline-desc">
+                Industrial science, Hollywood, the World Wide Web, and TikTok make English the global lingua franca of 1.5B+ people!
+              </p>
+              <div class="timeline-quote-box">
+                <strong>Digital Sound:</strong>
+                <em>"GG, stream, prompt, viral, rizz, AI!"</em>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 4 (layout-split): "Why Everyone Speaks It Today" -->
+      <section class="slide" id="slide-4" data-index="3">
+        <div class="slide-title-wrapper">
+          <div class="pill-badge fragment">The Modern Superpower</div>
+          <h2 class="slide-title fragment">Why Everyone Speaks It Today</h2>
+          <p class="slide-subtitle fragment">How English became the undisputed operating system of modern youth culture and digital civilization.</p>
+        </div>
+
+        <div class="layout-split">
+          <!-- Left side: Student Modern Anchors -->
+          <div class="anchors-column">
+            <div class="anchor-item fragment">
+              <div class="anchor-icon-box">🎮</div>
+              <div class="anchor-text-box">
+                <h3>Global Gaming Lobbies</h3>
+                <p>From Fortnite to Valorant and Discord servers, squads coordinate in English across continents: "GG", "clutch", "respawn", "nerf".</p>
+              </div>
+            </div>
+
+            <div class="anchor-item fragment">
+              <div class="anchor-icon-box">📱</div>
+              <div class="anchor-text-box">
+                <h3>TikTok &amp; Social Trends</h3>
+                <p>Memes, soundbites, and viral challenges jump across borders instantly because English is the common currency of creators.</p>
+              </div>
+            </div>
+
+            <div class="anchor-item fragment">
+              <div class="anchor-icon-box">💻</div>
+              <div class="anchor-text-box">
+                <h3>Code &amp; Future Tech</h3>
+                <p>Python, JavaScript, Swift, and HTML are built on English keywords. To talk to computers, you must write English!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: Giant "1st" Stat Card -->
+          <div class="stat-hero-card fragment">
+            <div class="pill-badge amber" style="margin-bottom: 12px;">GLOBAL #1 RANK</div>
+            <div class="giant-rank-badge">1st</div>
+            <div class="hero-stat-number">1.5 Billion+ Speakers</div>
+            <p class="hero-stat-label">
+              The world's most studied second language. For every 1 native speaker, there are <strong>3 non-native speakers</strong>!
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 5 (layout-grid): "English is Weird! 🧠" -->
+      <section class="slide" id="slide-5" data-index="4">
+        <div class="slide-title-wrapper">
+          <div class="pill-badge amber fragment">Brain Melters &amp; Curiosities</div>
+          <h2 class="slide-title fragment">English is Weird! 🧠</h2>
+          <p class="slide-subtitle fragment">Prepare to question everything you know about grammar and vocabulary with these bizarre facts.</p>
+        </div>
+
+        <div class="layout-trivia-grid">
+          <!-- Card 1: Shortest Sentence -->
+          <div class="trivia-card fragment">
+            <div>
+              <div class="trivia-icon-badge">⚡</div>
+              <h3 class="trivia-head">The Shortest Sentence</h3>
+              <p class="trivia-body">
+                The shortest complete sentence in English is just two letters: <strong>"Go!"</strong> It has a verb and an implied subject <em>[You]</em>!
+              </p>
+            </div>
+            <div class="trivia-callout">
+              Runner up: "I am." (3 letters)
+            </div>
+            <button class="audio-pronounce-btn" onclick="deck.speakWord('Go!')">🔊 Hear 'Go!'</button>
+          </div>
+
+          <!-- Card 2: 45-letter Word -->
+          <div class="trivia-card fragment">
+            <div>
+              <div class="trivia-icon-badge">🦖</div>
+              <h3 class="trivia-head">The 45-Letter Monster</h3>
+              <p class="trivia-body">
+                The longest word in a major dictionary describes a lung disease caused by inhaling ultrafine silicate volcanic ash.
+              </p>
+            </div>
+            <div class="trivia-callout">
+              pneumonoultramicroscopicsilicovolcanoconiosis
+            </div>
+            <button class="audio-pronounce-btn" onclick="deck.speakWord('Pneumonoultramicroscopicsilicovolcanoconiosis')">🔊 Speak 45-Letter Word</button>
+          </div>
+
+          <!-- Card 3: The Ghost Word "Dord" -->
+          <div class="trivia-card fragment">
+            <div>
+              <div class="trivia-icon-badge">👻</div>
+              <h3 class="trivia-head">The Ghost Word: "Dord"</h3>
+              <p class="trivia-body">
+                In 1934, Webster’s Dictionary accidentally added the word <strong>"dord"</strong> defined as density, due to a misread slip reading <em>"D or d, cont. / density"</em>!
+              </p>
+            </div>
+            <div class="trivia-callout">
+              It stayed in the dictionary for 5 years!
+            </div>
+            <button class="audio-pronounce-btn" onclick="deck.speakWord('Dord! The phantom dictionary word.')">🔊 Hear 'Dord'</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SLIDE 6 (Interactive Quiz Layout): "Time for a Quick Quiz! 🔥" -->
+      <section class="slide" id="slide-6" data-index="5">
+        <div class="slide-title-wrapper">
+          <div class="pill-badge coral fragment">Interactive Challenge</div>
+          <h2 class="slide-title fragment">Time for a Quick Quiz! 🔥</h2>
+          <p class="slide-subtitle fragment">Put your language instincts to the test. Click or reveal with the right arrow key!</p>
+        </div>
+
+        <div class="layout-quiz">
+          <div class="quiz-question-banner fragment">
+            <h3 class="quiz-question-text">
+              Which letter is the most commonly used in the English language?
+            </h3>
+          </div>
+
+          <!-- 2x2 Grid of Answer Boxes. Option B has pre-styled .correct template class applied when revealed -->
+          <div class="quiz-grid-2x2">
+            <div class="quiz-option fragment" id="opt-A" onclick="deck.pickAnswer('A')">
+              <div class="option-key">A</div>
+              <div class="option-info">
+                <div class="option-letter">Letter "A"</div>
+                <div class="option-detail">Approx. 8.2% frequency in words</div>
+              </div>
+            </div>
+
+            <!-- Option B is the Correct Answer -->
+            <div class="quiz-option fragment" id="opt-B" onclick="deck.pickAnswer('B')">
+              <div class="option-key">B</div>
+              <div class="option-info">
+                <div class="option-letter">Letter "E" 👑</div>
+                <div class="option-detail">12.7% frequency — The undisputed champion!</div>
+              </div>
+            </div>
+
+            <div class="quiz-option fragment" id="opt-C" onclick="deck.pickAnswer('C')">
+              <div class="option-key">C</div>
+              <div class="option-info">
+                <div class="option-letter">Letter "T"</div>
+                <div class="option-detail">Approx. 9.1% frequency (Most common consonant)</div>
+              </div>
+            </div>
+
+            <div class="quiz-option fragment" id="opt-D" onclick="deck.pickAnswer('D')">
+              <div class="option-key">D</div>
+              <div class="option-info">
+                <div class="option-letter">Letter "O"</div>
+                <div class="option-detail">Approx. 7.5% frequency in words</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quiz-feedback-box" id="quiz-feedback"></div>
+        </div>
+      </section>
+
+      <!-- SLIDE 7 (layout-cover): "Your Turn to Conquer the World 🌍" -->
+      <section class="slide layout-cover" id="slide-7" data-index="6">
+        <div class="cover-content">
+          <div class="pill-badge indigo fragment">The Future Belongs to You</div>
+
+          <h2 class="cover-title fragment" style="font-size: 50px;">
+            Your Turn to Conquer the World 🌍
+          </h2>
+
+          <p class="cover-subtitle fragment">
+            English does not belong to a single island, a single accent, or a single rulebook. It belongs to <strong>YOU</strong> and everyone using it to create, code, sing, and unite!
+          </p>
+
+          <div class="closing-stats-row">
+            <div class="closing-stat-item fragment">
+              <div class="closing-stat-num">4 Eras</div>
+              <div class="closing-stat-desc">Anglo-Saxon, French, Bard &amp; Digital</div>
+            </div>
+            <div class="closing-stat-item fragment">
+              <div class="closing-stat-num">1.5B+</div>
+              <div class="closing-stat-desc">Global Friends Waiting to Talk</div>
+            </div>
+            <div class="closing-stat-item fragment">
+              <div class="closing-stat-num">∞</div >
+              <div class="closing-stat-desc">Possibilities for Your Voice</div>
+            </div>
+          </div>
+
+          <div class="keyboard-hint-pill fragment" style="margin-top: 16px;">
+            <span>✨ "Speak boldly, make mistakes, invent new words, and tell your story!"</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- AUDIO SYNTHESIS & PRESENTATION ENGINE JAVASCRIPT -->
+  <script>
+    class PresentationEngine {
+      constructor() {
+        this.slides = Array.from(document.querySelectorAll('.slide'));
+        this.currentSlideIndex = 0;
+        this.soundEnabled = true;
+        this.audioCtx = null;
+        
+        // Auto-Play State (cycles slides every 15s)
+        this.isAutoPlay = false;
+        this.autoPlayIntervalMs = 15000;
+        this.autoPlayStartTime = 0;
+        this.autoPlayTimerId = null;
+        this.autoPlayAnimFrame = null;
+
+        // Premium Presenter Tools
+        this.isLaserMode = false;
+        this.isDrawMode = false;
+        this.drawingCanvas = null;
+        this.drawingCtx = null;
+        this.isPointerDown = false;
+        this.lastX = 0;
+        this.lastY = 0;
+        
+        this.init();
+      }
+
+      init() {
+        this.slides.forEach((slide, idx) => {
+          slide.classList.remove('active', 'slide-prev', 'slide-next');
+          if (idx === 0) {
+            slide.classList.add('active');
+          } else {
+            slide.classList.add('slide-next');
+          }
+        });
+        this.updateSlideState();
+        this.bindEvents();
+        this.initAudio();
+        this.initCanvas();
+      }
+
+      initAudio() {
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (AudioContext) {
+            this.audioCtx = new AudioContext();
+          }
+        } catch (e) {
+          console.warn('Web Audio not supported');
+        }
+      }
+
+      playTone(freq, type = 'sine', duration = 0.12, gainValue = 0.1) {
+        if (!this.soundEnabled || !this.audioCtx) return;
+        try {
+          if (this.audioCtx.state === 'suspended') {
+            this.audioCtx.resume();
+          }
+          const osc = this.audioCtx.createOscillator();
+          const gain = this.audioCtx.createGain();
+          osc.type = type;
+          osc.frequency.setValueAtTime(freq, this.audioCtx.currentTime);
+          gain.gain.setValueAtTime(gainValue, this.audioCtx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.001, this.audioCtx.currentTime + duration);
+          osc.connect(gain);
+          gain.connect(this.audioCtx.destination);
+          osc.start();
+          osc.stop(this.audioCtx.currentTime + duration);
+        } catch (e) {
+          // ignore audio failure
+        }
+      }
+
+      playAdvanceSound() {
+        this.playTone(520, 'sine', 0.1, 0.08);
+      }
+
+      playCorrectSound() {
+        if (!this.soundEnabled || !this.audioCtx) return;
+        try {
+          const now = this.audioCtx.currentTime;
+          [523.25, 659.25, 783.99, 1046.50].forEach((freq, idx) => {
+            const osc = this.audioCtx.createOscillator();
+            const gain = this.audioCtx.createGain();
+            osc.frequency.value = freq;
+            gain.gain.setValueAtTime(0.08, now + idx * 0.08);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.08 + 0.25);
+            osc.connect(gain);
+            gain.connect(this.audioCtx.destination);
+            osc.start(now + idx * 0.08);
+            osc.stop(now + idx * 0.08 + 0.25);
+          });
+        } catch(e) {}
+      }
+
+      bindEvents() {
+        // Keyboard controls
+        window.addEventListener('keydown', (e) => {
+          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+
+          switch (e.key) {
+            case ' ':
+            case 'ArrowRight':
+            case 'PageDown':
+            case 'n':
+            case 'N':
+              e.preventDefault();
+              this.next();
+              break;
+            case 'ArrowLeft':
+            case 'PageUp':
+            case 'p':
+            case 'P':
+              e.preventDefault();
+              this.prev();
+              break;
+            case 'Home':
+              e.preventDefault();
+              this.goToSlide(0);
+              break;
+            case 'End':
+              e.preventDefault();
+              this.goToSlide(this.slides.length - 1);
+              break;
+            case 'r':
+            case 'R':
+              e.preventDefault();
+              this.resetDeck();
+              break;
+            case 'q':
+            case 'Q':
+              e.preventDefault();
+              this.revealQuiz();
+              break;
+            case 'c':
+            case 'C':
+              e.preventDefault();
+              this.triggerConfetti();
+              break;
+            case 'a':
+            case 'A':
+              e.preventDefault();
+              this.toggleAutoPlay();
+              break;
+            case 'l':
+            case 'L':
+              e.preventDefault();
+              this.toggleLaser();
+              break;
+            case 'd':
+            case 'D':
+              e.preventDefault();
+              this.toggleDraw();
+              break;
+            case 'm':
+            case 'M':
+              e.preventDefault();
+              this.openNotes();
+              break;
+            case '1':
+              this.sendReaction('🔥');
+              break;
+            case '2':
+              this.sendReaction('🤯');
+              break;
+            case '3':
+              this.sendReaction('👏');
+              break;
+            case '4':
+              this.sendReaction('💯');
+              break;
+            case '5':
+              this.sendReaction('⚡');
+              break;
+          }
+        });
+
+        // Touch swipe handling on viewport
+        let touchStartX = 0;
+        let touchStartY = 0;
+        const container = document.getElementById('deck-container');
+
+        container.addEventListener('touchstart', (e) => {
+          touchStartX = e.touches[0].clientX;
+          touchStartY = e.touches[0].clientY;
+        }, { passive: true });
+
+        container.addEventListener('touchend', (e) => {
+          const deltaX = e.changedTouches[0].clientX - touchStartX;
+          const deltaY = e.changedTouches[0].clientY - touchStartY;
+          
+          if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX < 0) {
+              this.next();
+            } else {
+              this.prev();
+            }
+          }
+        }, { passive: true });
+      }
+
+      getCurrentSlide() {
+        return this.slides[this.currentSlideIndex];
+      }
+
+      getFragments(slide) {
+        return Array.from(slide.querySelectorAll('.fragment'));
+      }
+
+      getHiddenFragments(slide) {
+        return Array.from(slide.querySelectorAll('.fragment:not(.visible)'));
+      }
+
+      getVisibleFragments(slide) {
+        return Array.from(slide.querySelectorAll('.fragment.visible'));
+      }
+
+      next() {
+        const currentSlide = this.getCurrentSlide();
+        const hiddenFragments = this.getHiddenFragments(currentSlide);
+
+        if (hiddenFragments.length > 0) {
+          // Reveal next fragment
+          hiddenFragments[0].classList.add('visible');
+          this.playAdvanceSound();
+          this.updateDashboardStats();
+          this.notifyAndroid();
+          if (this.isAutoPlay) this.resetAutoPlayTimer();
+        } else if (this.currentSlideIndex < this.slides.length - 1) {
+          // Go to next slide
+          this.goToSlide(this.currentSlideIndex + 1);
+        } else {
+          // Completed final slide
+          if (this.isAutoPlay) {
+            this.goToSlide(0, true);
+          } else {
+            this.triggerConfetti();
+          }
+        }
+      }
+
+      prev() {
+        const currentSlide = this.getCurrentSlide();
+        const visibleFragments = this.getVisibleFragments(currentSlide);
+
+        if (visibleFragments.length > 0) {
+          // Hide previous fragment
+          visibleFragments[visibleFragments.length - 1].classList.remove('visible');
+          this.playTone(380, 'sine', 0.08, 0.06);
+          this.updateDashboardStats();
+          this.notifyAndroid();
+          if (this.isAutoPlay) this.resetAutoPlayTimer();
+        } else if (this.currentSlideIndex > 0) {
+          // Go to previous slide, reveal all its fragments
+          this.goToSlide(this.currentSlideIndex - 1, true);
+        }
+      }
+
+      goToSlide(index, revealAllFragments = false) {
+        if (index < 0 || index >= this.slides.length) return;
+
+        this.currentSlideIndex = index;
+        this.slides.forEach((slide, idx) => {
+          slide.classList.remove('active', 'slide-prev', 'slide-next');
+          if (idx === index) {
+            slide.classList.add('active');
+            const fragments = this.getFragments(slide);
+            fragments.forEach(f => {
+              if (revealAllFragments) {
+                f.classList.add('visible');
+              } else {
+                f.classList.remove('visible');
+              }
+            });
+            // If starting slide, reveal initial element
+            if (!revealAllFragments && fragments.length > 0) {
+              fragments[0].classList.add('visible');
+            }
+          } else if (idx < index) {
+            slide.classList.add('slide-prev');
+          } else {
+            slide.classList.add('slide-next');
+          }
+        });
+
+        this.updateSlideState();
+        this.playTone(600, 'sine', 0.1, 0.07);
+
+        if (index === this.slides.length - 1) {
+          this.triggerConfetti();
+        }
+
+        if (this.isAutoPlay) {
+          this.resetAutoPlayTimer();
+        }
+      }
+
+      updateSlideState() {
+        // Update Dashboard Nav highlight
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach((btn, idx) => {
+          if (idx === this.currentSlideIndex) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+
+        // Update progress bar
+        const progressPct = ((this.currentSlideIndex + 1) / this.slides.length) * 100;
+        const bar = document.getElementById('progress-bar');
+        if (bar) bar.style.width = `${progressPct}%`;
+
+        // Update current slide number
+        const slideNumEl = document.getElementById('dash-slide-num');
+        if (slideNumEl) slideNumEl.textContent = this.currentSlideIndex + 1;
+
+        this.updateDashboardStats();
+        this.notifyAndroid();
+      }
+
+      updateDashboardStats() {
+        const currentSlide = this.getCurrentSlide();
+        const total = this.getFragments(currentSlide).length;
+        const visible = this.getVisibleFragments(currentSlide).length;
+
+        const fragNumEl = document.getElementById('dash-frag-num');
+        const fragTotalEl = document.getElementById('dash-frag-total');
+        if (fragNumEl) fragNumEl.textContent = visible;
+        if (fragTotalEl) fragTotalEl.textContent = total;
+      }
+
+      pickAnswer(letter) {
+        const optionB = document.getElementById('opt-B');
+        const feedback = document.getElementById('quiz-feedback');
+
+        if (letter === 'B') {
+          // Correct
+          optionB.classList.add('correct');
+          this.playCorrectSound();
+          this.triggerConfetti();
+          if (feedback) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(16, 185, 129, 0.2)';
+            feedback.style.border = '1px solid #10b981';
+            feedback.style.color = '#34d399';
+            feedback.innerHTML = '🎉 <strong>BINGO! "E" is the undisputed champion!</strong> Appearing in over 12.7% of all written English words.';
+          }
+        } else {
+          // Wrong
+          const picked = document.getElementById(`opt-${letter}`);
+          if (picked) {
+            picked.classList.add('wrong-picked');
+            setTimeout(() => picked.classList.remove('wrong-picked'), 800);
+          }
+          this.playTone(220, 'sawtooth', 0.2, 0.08);
+          if (feedback) {
+            feedback.style.display = 'block';
+            feedback.style.background = 'rgba(244, 63, 94, 0.2)';
+            feedback.style.border = '1px solid #f43f5e';
+            feedback.style.color = '#fda4af';
+            feedback.innerHTML = `❌ Good guess with '${letter}', but not #1! Look at Option B!`;
+          }
+        }
+      }
+
+      revealQuiz() {
+        // Quiz is Slide index 5
+        this.goToSlide(5);
+        // Reveal all fragments on quiz slide
+        const quizSlide = this.slides[5];
+        if (quizSlide) {
+          this.getFragments(quizSlide).forEach(f => f.classList.add('visible'));
+        }
+
+        // Highlight Option B with .correct template class
+        const optB = document.getElementById('opt-B');
+        if (optB) {
+          optB.classList.add('correct');
+        }
+        this.playCorrectSound();
+        this.triggerConfetti();
+
+        const feedback = document.getElementById('quiz-feedback');
+        if (feedback) {
+          feedback.style.display = 'block';
+          feedback.style.background = 'rgba(16, 185, 129, 0.2)';
+          feedback.style.border = '1px solid #10b981';
+          feedback.style.color = '#34d399';
+          feedback.innerHTML = '👑 <strong>Correct Answer: Option B ("E")!</strong> It powers nearly 13% of all English vocabulary.';
+        }
+        this.updateDashboardStats();
+      }
+
+      toggleSound() {
+        this.soundEnabled = !this.soundEnabled;
+        const btn = document.getElementById('btn-sound');
+        if (btn) {
+          btn.textContent = this.soundEnabled ? '🔊 Sound: ON' : '🔇 Sound: OFF';
+        }
+        if (this.soundEnabled) {
+          this.playTone(880, 'sine', 0.1, 0.1);
+        }
+      }
+
+      resetDeck() {
+        this.stopAutoPlay();
+        this.slides.forEach(slide => {
+          this.getFragments(slide).forEach(f => f.classList.remove('visible'));
+        });
+        const optB = document.getElementById('opt-B');
+        if (optB) optB.classList.remove('correct');
+        const feedback = document.getElementById('quiz-feedback');
+        if (feedback) feedback.style.display = 'none';
+
+        this.goToSlide(0);
+      }
+
+      toggleAutoPlay(forceState) {
+        const targetState = (typeof forceState === 'boolean') ? forceState : !this.isAutoPlay;
+        if (targetState) {
+          this.startAutoPlay();
+        } else {
+          this.stopAutoPlay();
+        }
+      }
+
+      startAutoPlay() {
+        this.isAutoPlay = true;
+        const btn = document.getElementById('btn-autoplay');
+        if (btn) {
+          btn.classList.add('active-auto');
+          btn.innerHTML = '⏸ Auto: 15s';
+        }
+        const timerContainer = document.getElementById('autoplay-timer-container');
+        if (timerContainer) timerContainer.classList.add('active');
+        const viewportTimer = document.getElementById('autoplay-viewport-timer');
+        if (viewportTimer) viewportTimer.classList.add('active');
+        const badge = document.getElementById('autoplay-badge');
+        if (badge) badge.classList.add('active');
+
+        this.resetAutoPlayTimer();
+        this.playTone(720, 'sine', 0.1, 0.08);
+        this.notifyAndroidAutoPlay();
+      }
+
+      stopAutoPlay() {
+        this.isAutoPlay = false;
+        if (this.autoPlayTimerId) {
+          clearTimeout(this.autoPlayTimerId);
+          this.autoPlayTimerId = null;
+        }
+        if (this.autoPlayAnimFrame) {
+          cancelAnimationFrame(this.autoPlayAnimFrame);
+          this.autoPlayAnimFrame = null;
+        }
+
+        const btn = document.getElementById('btn-autoplay');
+        if (btn) {
+          btn.classList.remove('active-auto');
+          btn.innerHTML = '⏱ Auto: OFF';
+        }
+        const timerContainer = document.getElementById('autoplay-timer-container');
+        if (timerContainer) timerContainer.classList.remove('active');
+        const viewportTimer = document.getElementById('autoplay-viewport-timer');
+        if (viewportTimer) viewportTimer.classList.remove('active');
+        const badge = document.getElementById('autoplay-badge');
+        if (badge) badge.classList.remove('active');
+        const bar = document.getElementById('autoplay-timer-bar');
+        if (bar) bar.style.width = '0%';
+        const viewportBar = document.getElementById('autoplay-viewport-bar');
+        if (viewportBar) viewportBar.style.width = '0%';
+
+        this.playTone(340, 'sine', 0.08, 0.05);
+        this.notifyAndroidAutoPlay();
+      }
+
+      resetAutoPlayTimer() {
+        if (!this.isAutoPlay) return;
+
+        if (this.autoPlayTimerId) {
+          clearTimeout(this.autoPlayTimerId);
+          this.autoPlayTimerId = null;
+        }
+        if (this.autoPlayAnimFrame) {
+          cancelAnimationFrame(this.autoPlayAnimFrame);
+          this.autoPlayAnimFrame = null;
+        }
+
+        this.autoPlayStartTime = performance.now();
+
+        const bar = document.getElementById('autoplay-timer-bar');
+        const viewportBar = document.getElementById('autoplay-viewport-bar');
+        const countdownEl = document.getElementById('autoplay-countdown');
+        if (bar) bar.style.width = '0%';
+        if (viewportBar) viewportBar.style.width = '0%';
+        if (countdownEl) countdownEl.textContent = '15';
+
+        const updateFrame = (now) => {
+          if (!this.isAutoPlay) return;
+          const elapsed = now - this.autoPlayStartTime;
+          const progress = Math.min(1, elapsed / this.autoPlayIntervalMs);
+          const remainingSec = Math.max(1, Math.ceil((this.autoPlayIntervalMs - elapsed) / 1000));
+
+          if (bar) bar.style.width = `${progress * 100}%`;
+          if (viewportBar) viewportBar.style.width = `${progress * 100}%`;
+          if (countdownEl) countdownEl.textContent = remainingSec;
+
+          if (progress < 1) {
+            this.autoPlayAnimFrame = requestAnimationFrame(updateFrame);
+          }
+        };
+
+        this.autoPlayAnimFrame = requestAnimationFrame(updateFrame);
+
+        this.autoPlayTimerId = setTimeout(() => {
+          if (!this.isAutoPlay) return;
+          // Cycle to next slide every 15s (loops back to slide 1 upon reaching the end)
+          const nextIndex = (this.currentSlideIndex + 1) % this.slides.length;
+          this.goToSlide(nextIndex, true);
+        }, this.autoPlayIntervalMs);
+      }
+
+      notifyAndroidAutoPlay() {
+        if (window.AndroidBridge && typeof window.AndroidBridge.onAutoPlayChanged === 'function') {
+          try {
+            window.AndroidBridge.onAutoPlayChanged(this.isAutoPlay);
+          } catch(e) {}
+        }
+      }
+
+      triggerConfetti() {
+        const canvas = document.getElementById('confetti-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const particles = [];
+        const colors = ['#6366f1', '#22d3ee', '#fbbf24', '#f43f5e', '#10b981', '#ffffff'];
+
+        for (let i = 0; i < 90; i++) {
+          particles.push({
+            x: canvas.width / 2 + (Math.random() - 0.5) * 200,
+            y: canvas.height * 0.45,
+            vx: (Math.random() - 0.5) * 14,
+            vy: (Math.random() - 1.2) * 12,
+            size: Math.random() * 8 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotSpeed: (Math.random() - 0.5) * 10,
+            alpha: 1
+          });
+        }
+
+        let animationFrame;
+        const render = () => {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          let activeCount = 0;
+
+          particles.forEach(p => {
+            p.x += p.vx;
+            p.y += p.vy;
+            p.vy += 0.35; // gravity
+            p.rotation += p.rotSpeed;
+            p.alpha -= 0.012;
+
+            if (p.alpha > 0) {
+              activeCount++;
+              ctx.save();
+              ctx.translate(p.x, p.y);
+              ctx.rotate((p.rotation * Math.PI) / 180);
+              ctx.fillStyle = p.color;
+              ctx.globalAlpha = Math.max(0, p.alpha);
+              ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+              ctx.restore();
+            }
+          });
+
+          if (activeCount > 0) {
+            animationFrame = requestAnimationFrame(render);
+          } else {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+          }
+        };
+
+        render();
+      }
+
+      initCanvas() {
+        this.drawingCanvas = document.getElementById('drawing-canvas');
+        if (!this.drawingCanvas) return;
+        this.drawingCtx = this.drawingCanvas.getContext('2d');
+        const resizeCanvas = () => {
+          if (!this.drawingCanvas || !this.drawingCanvas.parentElement) return;
+          const rect = this.drawingCanvas.parentElement.getBoundingClientRect();
+          this.drawingCanvas.width = rect.width;
+          this.drawingCanvas.height = rect.height;
+        };
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        const getPos = (e) => {
+          const rect = this.drawingCanvas.getBoundingClientRect();
+          const clientX = (e.touches && e.touches.length > 0) ? e.touches[0].clientX : e.clientX;
+          const clientY = (e.touches && e.touches.length > 0) ? e.touches[0].clientY : e.clientY;
+          return {
+            x: clientX - rect.left,
+            y: clientY - rect.top
+          };
+        };
+
+        const laserDot = document.getElementById('laser-dot');
+
+        const onDown = (e) => {
+          if (!this.isDrawMode && !this.isLaserMode) return;
+          this.isPointerDown = true;
+          const pos = getPos(e);
+          this.lastX = pos.x;
+          this.lastY = pos.y;
+          if (this.isDrawMode && this.drawingCtx) {
+            this.drawingCtx.beginPath();
+            this.drawingCtx.moveTo(this.lastX, this.lastY);
+          }
+        };
+
+        const onMove = (e) => {
+          const pos = getPos(e);
+          if (this.isLaserMode && laserDot) {
+            laserDot.style.left = `${pos.x}px`;
+            laserDot.style.top = `${pos.y}px`;
+            laserDot.classList.add('active');
+          }
+          if (this.isDrawMode && this.isPointerDown && this.drawingCtx) {
+            this.drawingCtx.strokeStyle = '#22d3ee';
+            this.drawingCtx.lineWidth = 4;
+            this.drawingCtx.lineCap = 'round';
+            this.drawingCtx.lineJoin = 'round';
+            this.drawingCtx.shadowColor = '#22d3ee';
+            this.drawingCtx.shadowBlur = 8;
+            this.drawingCtx.lineTo(pos.x, pos.y);
+            this.drawingCtx.stroke();
+            this.lastX = pos.x;
+            this.lastY = pos.y;
+          }
+        };
+
+        const onUp = () => {
+          this.isPointerDown = false;
+        };
+
+        const onLeave = () => {
+          this.isPointerDown = false;
+          if (laserDot) laserDot.classList.remove('active');
+        };
+
+        this.drawingCanvas.addEventListener('mousedown', onDown);
+        this.drawingCanvas.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+        this.drawingCanvas.addEventListener('mouseleave', onLeave);
+
+        this.drawingCanvas.addEventListener('touchstart', onDown, { passive: true });
+        this.drawingCanvas.addEventListener('touchmove', onMove, { passive: true });
+        this.drawingCanvas.addEventListener('touchend', onUp, { passive: true });
+      }
+
+      setAutoPlaySpeed(ms) {
+        this.autoPlayIntervalMs = ms;
+        ['speed-10', 'speed-15', 'speed-30'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.classList.remove('active');
+        });
+        const activeId = ms === 10000 ? 'speed-10' : (ms === 30000 ? 'speed-30' : 'speed-15');
+        const activeEl = document.getElementById(activeId);
+        if (activeEl) activeEl.classList.add('active');
+
+        const countdownEl = document.getElementById('autoplay-countdown');
+        if (countdownEl) countdownEl.textContent = ms / 1000;
+
+        if (this.isAutoPlay) {
+          this.resetAutoPlayTimer();
+        }
+        this.playTone(660, 'sine', 0.08, 0.06);
+      }
+
+      toggleLaser() {
+        this.isLaserMode = !this.isLaserMode;
+        if (this.isLaserMode) {
+          this.isDrawMode = false;
+          const drawBtn = document.getElementById('btn-draw');
+          if (drawBtn) drawBtn.classList.remove('active-auto');
+        }
+        const btn = document.getElementById('btn-laser');
+        if (btn) {
+          if (this.isLaserMode) btn.classList.add('active-auto');
+          else btn.classList.remove('active-auto');
+        }
+        if (this.drawingCanvas) {
+          this.drawingCanvas.className = this.isLaserMode ? 'laser-active' : (this.isDrawMode ? 'drawing-active' : '');
+        }
+        const dot = document.getElementById('laser-dot');
+        if (dot && !this.isLaserMode) dot.classList.remove('active');
+        this.playTone(this.isLaserMode ? 880 : 440, 'triangle', 0.08, 0.07);
+      }
+
+      toggleDraw() {
+        this.isDrawMode = !this.isDrawMode;
+        if (this.isDrawMode) {
+          this.isLaserMode = false;
+          const laserBtn = document.getElementById('btn-laser');
+          if (laserBtn) laserBtn.classList.remove('active-auto');
+          const dot = document.getElementById('laser-dot');
+          if (dot) dot.classList.remove('active');
+        }
+        const btn = document.getElementById('btn-draw');
+        if (btn) {
+          if (this.isDrawMode) btn.classList.add('active-auto');
+          else btn.classList.remove('active-auto');
+        }
+        if (this.drawingCanvas) {
+          this.drawingCanvas.className = this.isDrawMode ? 'drawing-active' : (this.isLaserMode ? 'laser-active' : '');
+        }
+        this.playTone(this.isDrawMode ? 780 : 390, 'sine', 0.08, 0.07);
+      }
+
+      clearDrawing() {
+        if (this.drawingCtx && this.drawingCanvas) {
+          this.drawingCtx.clearRect(0, 0, this.drawingCanvas.width, this.drawingCanvas.height);
+          this.playTone(320, 'sine', 0.12, 0.08);
+        }
+      }
+
+      sendReaction(emoji) {
+        const stage = document.getElementById('reactions-stage');
+        if (!stage) return;
+        const el = document.createElement('div');
+        el.className = 'floating-reaction';
+        el.textContent = emoji;
+        const leftPct = 12 + Math.random() * 76;
+        el.style.left = `${leftPct}%`;
+        stage.appendChild(el);
+        this.playTone(580 + Math.random() * 260, 'sine', 0.09, 0.05);
+        setTimeout(() => el.remove(), 2300);
+      }
+
+      speakWord(text, lang = 'en-GB') {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.cancel();
+          const utterance = new SpeechSynthesisUtterance(text);
+          utterance.lang = lang;
+          utterance.rate = 0.92;
+          utterance.pitch = 1.05;
+          window.speechSynthesis.speak(utterance);
+        }
+        this.playTone(600, 'triangle', 0.15, 0.08);
+      }
+
+      pronounceKeyWord() {
+        const keyWordsBySlide = [
+          "Welcome to The English Language, the world's most versatile tongue!",
+          "Cow versus beef, pig versus pork, deer versus venison!",
+          "Hwaet! We Gardena in geardagum theodcyninga thrym gefrunon.",
+          "Over one point five billion people speak English worldwide today.",
+          "Pneumonoultramicroscopicsilicovolcanoconiosis, forty-five letters of volcanic dust!",
+          "The letter E accounts for nearly thirteen percent of all English words!",
+          "The English language now belongs to everyone who uses it to create and connect."
+        ];
+        const phrase = keyWordsBySlide[this.currentSlideIndex] || "English!";
+        this.speakWord(phrase);
+      }
+
+      openNotes() {
+        const modal = document.getElementById('notes-modal');
+        const content = document.getElementById('notes-content');
+        if (!modal || !content) return;
+
+        const lessonGuides = [
+          {
+            title: "Slide 1: Cover & Global Reach",
+            time: "3 mins",
+            goal: "Hook students by connecting English to gaming, Discord, TikTok, and tech.",
+            activity: "💬 Pair Share: Have students turn to a partner and list 3 English words they use daily outside of school."
+          },
+          {
+            title: "Slide 2: Origins & The French Twist (1066)",
+            time: "5 mins",
+            goal: "Contrast Anglo-Saxon everyday vocabulary with French courtly terms.",
+            activity: "⚔️ Farm vs. Banquet Sorting: Ask class why farmers said 'cow/calf/swine' while royals said 'beef/veal/pork'."
+          },
+          {
+            title: "Slide 3: Evolution Timeline",
+            time: "6 mins",
+            goal: "Trace the 1,500-year journey from Old English Beowulf to Modern Digital gaming slang.",
+            activity: "⏳ Letter Hunt: Point out runic letters Thorn (þ) and Ash (æ) and how the printing press fixed spelling."
+          },
+          {
+            title: "Slide 4: Why Everyone Speaks It Today",
+            time: "4 mins",
+            goal: "Understand the 3-to-1 ratio of non-native to native speakers and why English is the global Lingua Franca.",
+            activity: "🌐 Discussion: Why did English dominate international aviation, coding languages, and scientific papers?"
+          },
+          {
+            title: "Slide 5: English is Weird!",
+            time: "4 mins",
+            goal: "Celebrate quirks: ghost words, shortest sentence, and extreme syllable tongue-twisters.",
+            activity: "🧠 Pronunciation Challenge: Invite volunteers to pronounce 'Pneumonoultramicroscopicsilicovolcanoconiosis'!"
+          },
+          {
+            title: "Slide 6: Interactive Quiz",
+            time: "3 mins",
+            goal: "Interactive check for understanding letter frequency.",
+            activity: "🔥 Live Vote: Call for hand raises on Option A, B, C, or D before hitting the 'Reveal' button."
+          },
+          {
+            title: "Slide 7: Conquer The World",
+            time: "3 mins",
+            goal: "Empower students to embrace their accent and use English to share their original ideas.",
+            activity: "🌍 Reflection: Write one thing you want to achieve or create using English this year."
+          }
+        ];
+
+        const guide = lessonGuides[this.currentSlideIndex] || lessonGuides[0];
+        content.innerHTML = `
+          <div class="notes-box">
+            <h4>${guide.title} • Suggested Time: ${guide.time}</h4>
+            <p><strong>🎯 Learning Goal:</strong> ${guide.goal}</p>
+          </div>
+          <div class="notes-box" style="border-left-color: #fbbf24;">
+            <h4 style="color: #fbbf24;">💡 Student Engagement Activity</h4>
+            <p>${guide.activity}</p>
+          </div>
+          <div class="notes-box" style="border-left-color: #10b981;">
+            <h4 style="color: #10b981;">🗣️ Quick Presenter Tip</h4>
+            <p>Use the Laser pointer (<kbd>L</kbd>) or Pen Highlighter (<kbd>D</kbd>) to draw student attention to key vocabulary on the slide!</p>
+          </div>
+        `;
+        modal.classList.add('active');
+        this.playTone(720, 'sine', 0.1, 0.07);
+      }
+
+      closeNotes() {
+        const modal = document.getElementById('notes-modal');
+        if (modal) modal.classList.remove('active');
+        this.playTone(420, 'sine', 0.08, 0.05);
+      }
+
+      notifyAndroid() {
+        if (window.AndroidBridge && typeof window.AndroidBridge.onSlideChanged === 'function') {
+          try {
+            window.AndroidBridge.onSlideChanged(
+              this.currentSlideIndex,
+              this.slides.length,
+              this.getVisibleFragments(this.getCurrentSlide()).length,
+              this.getFragments(this.getCurrentSlide()).length
+            );
+          } catch(e) {}
+        }
+      }
+    }
+
+    // Expose engine instance globally
+    window.deck = new PresentationEngine();
+  </script>
+
+  <!-- SPEAKER NOTES & PEDAGOGICAL ACTIVITIES MODAL -->
+  <div class="notes-modal-overlay" id="notes-modal" onclick="if(event.target===this) deck.closeNotes()">
+    <div class="notes-modal-card">
+      <div class="notes-modal-header">
+        <div class="notes-modal-title">📋 Teacher Notes &amp; Class Activities</div>
+        <button class="notes-close-btn" onclick="deck.closeNotes()">✕ Close</button>
+      </div>
+      <div id="notes-content">
+        <!-- Dynamically rendered by deck.openNotes() -->
+      </div>
+    </div>
+  </div>
+</body>
+</html>
