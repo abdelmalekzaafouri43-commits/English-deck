@@ -31,9 +31,11 @@ object AiTutorService {
     }
 
     try {
-      val systemPrompt = "You are Spark, a friendly and encouraging AI English Tutor. " +
-          "The student is currently viewing a lesson slide about: '$currentTopic'. " +
-          "Provide a clear, engaging, concise answer (under 120 words) with helpful examples or pronunciation tips."
+      val systemPrompt = "You are Spark, an expert English Grammar Coach & Pedagogical Assistant for English teachers and learners. " +
+          "The current grammar module topic is: '$currentTopic'. " +
+          "Your role is to explain English grammar rules clearly, break down sentence structure, provide formulas (e.g. Subject + Verb + Object), " +
+          "correct learner mistakes line-by-line, suggest CEFR level adaptations (A1-C1), and offer practical teaching tips for ESL/EFL classrooms. " +
+          "Keep answers concise, structured, encouraging, and clear (under 140 words)."
 
       val systemInstructionPart = JSONObject().put("text", systemPrompt)
       val systemInstructionContent = JSONObject().put("parts", JSONArray().put(systemInstructionPart))
@@ -84,15 +86,19 @@ object AiTutorService {
     val q = question.lowercase()
     return when {
       q.contains("hello") || q.contains("hi") || q.contains("hey") ->
-        "Hello there! I'm Spark, your AI English Tutor. We are currently exploring '$topic'. What would you like to learn or practice?"
-      q.contains("origin") || q.contains("viking") || q.contains("french") ->
-        "In 1066, Norman French invaded Britain. Everyday farm words came from Old English (cow, pig, sheep), while regal dining words came from French (beef, pork, mutton)!"
-      q.contains("lingua franca") || q.contains("everyone") ->
-        "English became a global Lingua Franca because 3 out of every 4 English speakers today are non-native speakers! It's the standard for international coding, gaming, and aviation."
-      q.contains("quiz") || q.contains("letter") ->
-        "Did you know? The letter 'E' makes up over 11% of all English text, making it the most common letter in the dictionary!"
+        "Hello! I'm Spark, your English Grammar & Pedagogy Coach 🤖. We are currently exploring '$topic'. Ask me to explain a rule, check a sentence, or give teaching tips!"
+      q.contains("tense") || q.contains("present") || q.contains("past") || q.contains("perfect") ->
+        "Great tense question! Present Perfect (Subject + have/has + V3) connects past actions to the present (e.g. 'I have lived here since 2020'). Contrast with Past Simple for finished times!"
+      q.contains("conditional") || q.contains("if") ->
+        "Conditionals rule breakdown:\n• 1st (Real Future): If + Present, Will + Verb.\n• 2nd (Unreal Present): If + Past, Would + Verb.\n• 3rd (Past Regret): If + Past Perfect, Would have + V3."
+      q.contains("passive") || q.contains("active") ->
+        "Active voice emphasizes WHO performs the action ('She wrote the report'). Passive voice emphasizes WHAT was done ('The report was written'). Formula: Subject + Be + V3 (Past Participle)."
+      q.contains("article") || q.contains("a ") || q.contains("an ") || q.contains("the ") ->
+        "Articles quick guide:\n• 'A/An' for non-specific singular countable nouns ('a book', 'an apple').\n• 'The' for specific or unique nouns known to both speaker & listener ('the sun')."
+      q.contains("mistake") || q.contains("error") || q.contains("correct") ->
+        "Common learner error: 'He go to school yesterday' ❌. Correction: 'He WENT to school yesterday' ✅ (Past Simple requires irregular V2 form)."
       else ->
-        "Great question about '$topic'! English is full of fascinating history, rich vocabulary, and subtle grammar rules. Try asking about word origins, pronunciation tips, or grammar examples!"
+        "Excellent grammar query regarding '$topic'! English syntax relies on clear word order (Subject + Verb + Object). Feel free to ask me to analyze any sentence or create a classroom drill!"
     }
   }
 }

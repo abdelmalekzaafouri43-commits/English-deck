@@ -201,52 +201,52 @@ fun EnglishDeckApp(
     listOf(
       SlideInfo(
         id = 0,
-        title = "Cover & Intro",
-        icon = "⚡",
-        subtitle = "Small island to global superpower",
-        pedagogyTip = "Warm up the class: Ask students how many English words they use when playing games or watching TikTok!"
+        title = "Parts of Speech Pillars",
+        icon = "🧩",
+        subtitle = "Nouns, Verbs, Modifiers & Syntax",
+        pedagogyTip = "Warm-up activity: Color-code sentences! Have learners identify Nouns (blue), Verbs (red), and Adjectives (green)."
       ),
       SlideInfo(
         id = 1,
-        title = "Origins & French Twist",
-        icon = "⚔️",
-        subtitle = "Vikings & Cow vs. Beef",
-        pedagogyTip = "Engage the room: Why do we say 'cow' on a farm but 'beef' on our plate? Connect Anglo-Saxon farmers to Norman royalty!"
+        title = "Tense Timeline & Aspects",
+        icon = "⏳",
+        subtitle = "Simple, Continuous & Perfect Formulas",
+        pedagogyTip = "Tense timeline drill: Contrast Present Perfect vs Past Simple. Ask CCQs: 'Is the action finished?' and 'Is exact time stated?'"
       ),
       SlideInfo(
         id = 2,
-        title = "Evolution Timeline",
-        icon = "⏳",
-        subtitle = "Old English to Modern Digital",
-        pedagogyTip = "Timeline activity: Compare the Beowulf ancient chant with Chaucer, Shakespeare, and modern digital gaming slang!"
+        title = "Sentence Architecture",
+        icon = "🏛️",
+        subtitle = "SVO, FANBOYS & Relative Clauses",
+        pedagogyTip = "Sentence expansion game: Start with 'The student studied'. Have learners add FANBOYS conjunctions and relative clauses!"
       ),
       SlideInfo(
         id = 3,
-        title = "Why Everyone Speaks It",
-        icon = "🚀",
-        subtitle = "Gaming, Code & #1 Lingua Franca",
-        pedagogyTip = "Ask students: For every 1 native English speaker, how many non-native speakers exist? (Answer: 3!)"
+        title = "Conditionals & Wish Patterns",
+        icon = "🔀",
+        subtitle = "Zero, 1st, 2nd, 3rd & Hypotheticals",
+        pedagogyTip = "Speaking prompt: 'If you won $1,000,000, what WOULD you do?' (2nd Conditional). Highlight 'If I WERE you' for unreal situations."
       ),
       SlideInfo(
         id = 4,
-        title = "English is Weird!",
-        icon = "🧠",
-        subtitle = "Shortest sentence & Ghost words",
-        pedagogyTip = "Challenge the class to pronounce 'Pneumonoultramicroscopicsilicovolcanoconiosis' without breathing!"
+        title = "Active vs. Passive & Modals",
+        icon = "⚙️",
+        subtitle = "Focus Shifting & Polite Nuance",
+        pedagogyTip = "Journalism exercise: Compare Active vs Passive headlines. Ask learners why news reports omit the agent in Passive Voice!"
       ),
       SlideInfo(
         id = 5,
-        title = "Interactive Quiz",
-        icon = "🔥",
-        subtitle = "Most common English letter",
-        pedagogyTip = "Take a vote for letters A, B, C, D before tapping 'Reveal'! Watch for excitement when 'E' lights up green."
+        title = "Common Learner Pitfalls",
+        icon = "⚠️",
+        subtitle = "Subject-Verb, Articles & Errors",
+        pedagogyTip = "Error auction game: Present 5 sentences with common ESL mistakes (e.g., 'He explained me'). Have student teams fix errors!"
       ),
       SlideInfo(
         id = 6,
-        title = "Conquer The World",
-        icon = "🌍",
-        subtitle = "The language belongs to YOU",
-        pedagogyTip = "Inspire students: English is not about memorizing test rules; it's about connecting with 1.5 billion people."
+        title = "Grammar Masterclass Quiz",
+        icon = "🔥",
+        subtitle = "Interactive Diagnostic & Drills",
+        pedagogyTip = "Classroom diagnostic: Conduct a live grammar quiz! Vote on options A, B, C, D before tapping 'Reveal' for full explanations."
       )
     )
   }
@@ -535,53 +535,53 @@ fun EnglishDeckApp(
     val notes = remember {
       listOf(
         LessonNote(
-          title = "Slide 1: Cover & Global Reach",
-          time = "3 mins",
-          objective = "Hook students by connecting English to gaming, Discord, TikTok, and tech.",
-          studentActivity = "💬 Pair Share: Have students turn to a partner and list 3 English words they use daily outside of school.",
-          teacherTip = "Keep the energy high! Ask students how many of them watch YouTube or play online games in English."
-        ),
-        LessonNote(
-          title = "Slide 2: Origins & French Twist (1066)",
+          title = "Module 1: Parts of Speech Pillars",
           time = "5 mins",
-          objective = "Contrast Anglo-Saxon everyday vocabulary with French courtly culinary terms.",
-          studentActivity = "⚔️ Sorting Game: Ask why farmers said 'cow/calf/swine' while the nobility said 'beef/veal/pork'.",
-          teacherTip = "Highlight that modern English is an ongoing mashup of Germanic grit and French elegance."
+          objective = "Master the 8 core parts of speech and basic SVO (Subject + Verb + Object) sentence structure.",
+          studentActivity = "🧩 Sentence Color-Coding: Have students highlight Nouns (blue), Verbs (red), and Adjectives (green) in sample sentences.",
+          teacherTip = "Focus on CEFR A1-A2 foundations. Remind students that every complete English sentence requires a verb!"
         ),
         LessonNote(
-          title = "Slide 3: Evolution Timeline",
+          title = "Module 2: Tense Timeline & Aspects",
           time = "6 mins",
-          objective = "Trace 1,500 years from Old English Beowulf chant to digital gaming slang.",
-          studentActivity = "⏳ Letter Hunt: Point out runic Thorn (þ) and Ash (æ) and discuss how printing presses standardized spelling.",
-          teacherTip = "Play the audio pronunciation of Old English to let students hear how foreign it originally sounded."
+          objective = "Contrast Present Perfect (Subject + have/has + V3) with Past Simple across timeline diagrams.",
+          studentActivity = "⏳ Timeline Drill: Have learners place 'for 5 years' vs '5 years ago' on a timeline and construct sentences.",
+          teacherTip = "Ask Concept Check Questions (CCQs): 'Is the action finished?' and 'Is the exact time specified?'"
         ),
         LessonNote(
-          title = "Slide 4: Why Everyone Speaks It Today",
+          title = "Module 3: Sentence Architecture & Clauses",
+          time = "5 mins",
+          objective = "Build complex sentences using FANBOYS conjunctions and relative clauses (who, which, that).",
+          studentActivity = "🏛️ Sentence Expansion: Start with 'The student studied' and expand it with 'because' and 'who lives in London'.",
+          teacherTip = "Emphasize comma rules before coordinating conjunctions (FANBOYS) in compound sentences!"
+        ),
+        LessonNote(
+          title = "Module 4: Conditionals & Wish Patterns",
+          time = "6 mins",
+          objective = "Differentiate 1st (real future), 2nd (unreal present), and 3rd (past regret) conditionals.",
+          studentActivity = "🔀 Pair Speaking: Ask partners 'If you could travel anywhere tomorrow, where WOULD you go?' (2nd Conditional).",
+          teacherTip = "Point out the subjunctive 'If I WERE you' in formal and standard English test environments!"
+        ),
+        LessonNote(
+          title = "Module 5: Active vs. Passive & Modals",
+          time = "5 mins",
+          objective = "Understand when to use Passive Voice (Subject + Be + V3) and Modal Verbs for politeness & obligation.",
+          studentActivity = "⚙️ News Rewrite: Convert active sentences ('The team built the software') into passive voice.",
+          teacherTip = "Highlight that Passive Voice is essential for academic writing, scientific reports, and news headlines."
+        ),
+        LessonNote(
+          title = "Module 6: Common Learner Pitfalls",
+          time = "5 mins",
+          objective = "Diagnose and fix common ESL errors in Subject-Verb agreement, Articles (a/an/the), and Homophones.",
+          studentActivity = "⚠️ Error Auction: Present 5 sentences with common mistakes (e.g. 'He explained me'). Have teams correct them!",
+          teacherTip = "Explain the rule behind each error rather than just correcting it, focusing on count/non-count nouns."
+        ),
+        LessonNote(
+          title = "Module 7: Interactive Masterclass Quiz",
           time = "4 mins",
-          objective = "Understand the 3-to-1 ratio of non-native to native speakers and global Lingua Franca status.",
-          studentActivity = "🌐 Discussion: Why did English dominate international aviation, coding languages, and scientific papers?",
-          teacherTip = "Emphasize that international English belongs to everyone who uses it."
-        ),
-        LessonNote(
-          title = "Slide 5: English is Weird!",
-          time = "4 mins",
-          objective = "Celebrate linguistic oddities: ghost words, shortest sentence, and 45-letter tongue-twisters.",
-          studentActivity = "🧠 Challenge: Have 3 student volunteers compete to pronounce 'Pneumonoultramicroscopicsilicovolcanoconiosis'!",
-          teacherTip = "Use the laser pointer or drawing tool to circle the Greek and Latin roots inside the long word."
-        ),
-        LessonNote(
-          title = "Slide 6: Interactive Quiz",
-          time = "3 mins",
-          objective = "Formative check on letter frequency in English vocabulary.",
-          studentActivity = "🔥 Quick Vote: Ask for hand raises for A, B, C, or D before pressing 'Reveal'!",
-          teacherTip = "Option B ('E') will light up green with celebration confetti!"
-        ),
-        LessonNote(
-          title = "Slide 7: Conquer The World",
-          time = "3 mins",
-          objective = "Empower students to embrace their accent and use English to share their original creations.",
-          studentActivity = "🌍 Reflection: Write one thing you want to achieve, code, or share in English this year.",
-          teacherTip = "Finish with the Celebrate confetti party button to leave students inspired!"
+          objective = "Formative diagnostic check on English grammar rules, tenses, and sentence structure.",
+          studentActivity = "🔥 Class Diagnostic: Conduct a live vote for options A, B, C, D before revealing answers!",
+          teacherTip = "Option B will light up green with celebration confetti when revealed!"
         )
       )
     }

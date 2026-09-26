@@ -1,6 +1,6 @@
 {
-  "name": "English Language Deck",
-  "description": "An engaging, interactive 16:9 presentation deck exploring the history, global reach, and fun quirks of the English language.",
+  "name": "English Grammar Deck",
+  "description": "Interactive English language grammar masterclass deck and teaching toolkit for teachers and learners.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }
