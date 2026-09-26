@@ -530,7 +530,7 @@
       overflow: hidden;
     }
 
-    /* 16:9 Responsive Slide Canvas */
+    /* 16:9 Responsive Slide Canvas with 3D Perspective Stage */
     .deck-viewport {
       position: relative;
       width: 100%;
@@ -546,64 +546,78 @@
         0 0 40px rgba(99, 102, 241, 0.15);
       overflow: hidden;
       display: flex;
+      perspective: 1400px;
+      perspective-origin: 50% 50%;
     }
 
-    /* SLIDES STACK & MODERN PRESENTATION APP TRANSITION */
+    /* SLIDES STACK & ADVANCED 3D KEYNOTE-STYLE SLIDE-OUT TRANSITION */
     .slide {
       position: absolute;
       inset: 0;
       padding: 40px 48px;
       opacity: 0;
       pointer-events: none;
-      transform: translateX(38px) scale(0.985);
-      filter: blur(4px);
-      transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.4s ease;
+      transform: translate3d(100%, 0, -120px) rotateY(-14deg) scale(0.92);
+      filter: blur(10px) brightness(0.5);
+      transition: transform 0.58s cubic-bezier(0.2, 0.9, 0.2, 1),
+                  opacity 0.48s cubic-bezier(0.2, 0.9, 0.2, 1),
+                  filter 0.48s ease;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       overflow: hidden;
       will-change: transform, opacity, filter;
+      backface-visibility: hidden;
     }
 
+    /* Active Slide In Viewport */
     .slide.active {
       opacity: 1;
       pointer-events: auto;
-      transform: translateX(0) scale(1);
-      filter: blur(0);
-      z-index: 2;
+      transform: translate3d(0, 0, 0) rotateY(0deg) scale(1);
+      filter: blur(0px) brightness(1);
+      z-index: 10;
     }
 
+    /* Outgoing Slide Sliding Out to the Left with 3D Parallax Perspective */
     .slide.slide-prev {
-      transform: translateX(-38px) scale(0.985);
+      transform: translate3d(-100%, 0, -120px) rotateY(14deg) scale(0.92);
       opacity: 0;
-      filter: blur(4px);
+      filter: blur(10px) brightness(0.45);
       z-index: 1;
       pointer-events: none;
     }
 
+    /* Outgoing Slide Sliding Out to the Right with 3D Parallax Perspective */
     .slide.slide-next {
-      transform: translateX(38px) scale(0.985);
+      transform: translate3d(100%, 0, -120px) rotateY(-14deg) scale(0.92);
       opacity: 0;
-      filter: blur(4px);
+      filter: blur(10px) brightness(0.45);
       z-index: 1;
       pointer-events: none;
     }
 
-    /* FRAGMENT SEQUENCING */
+    /* FRAGMENT SEQUENCING & SMOOTH ENTRANCE */
     .fragment {
       opacity: 0;
-      transform: translateY(16px);
-      transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      transform: translate3d(0, 22px, 0) scale(0.97);
+      transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                  opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
       pointer-events: none;
     }
 
     .fragment.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: translate3d(0, 0, 0) scale(1);
       pointer-events: auto;
     }
+
+    /* Staggered Entrance Timings for Slide Elements */
+    .slide.active .fragment.visible:nth-child(1) { transition-delay: 0.03s; }
+    .slide.active .fragment.visible:nth-child(2) { transition-delay: 0.07s; }
+    .slide.active .fragment.visible:nth-child(3) { transition-delay: 0.11s; }
+    .slide.active .fragment.visible:nth-child(4) { transition-delay: 0.15s; }
+    .slide.active .fragment.visible:nth-child(5) { transition-delay: 0.19s; }
 
     /* BADGES & TYPOGRAPHY */
     .pill-badge {
